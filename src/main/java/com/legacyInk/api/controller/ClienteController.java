@@ -7,6 +7,7 @@ import com.legacyInk.api.dtoconverter.ClienteDTOConverter;
 import com.legacyInk.domain.model.Cliente;
 import com.legacyInk.domain.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,11 +38,23 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteDTO cadastrar (@RequestBody ClienteInput clienteInput) {
+    public ClienteDTO cadastrar(@Validated @RequestBody ClienteInput clienteInput) {
         Cliente cliente = convertido.paraModelo(clienteInput);
-        cliente = clienteService.validaUsuarioOuErro(cliente.getId());
-
+        clienteService.cadastrar(cliente);
         return converter.paraDTO(cliente);
+    }
+
+    @PutMapping("/{usuarioId}")
+    public ClienteDTO alterar(@PathVariable Long usuarioId, @Validated @RequestBody ClienteInput clienteInput) {
+        Cliente cliente = clienteService.validaUsuarioOuErro(usuarioId);
+        convertido.copiaDTOparaModeloDominio(clienteInput, cliente);
+        Cliente clienteAtualizado = clienteService.cadastrar(cliente);
+        return converter.paraDTO(clienteAtualizado);
+    }
+
+    @DeleteMapping("/{usuarioId}")
+    public void deleta(@PathVariable Long usuarioId) {
+        clienteService.deletar(usuarioId);
     }
 
 }

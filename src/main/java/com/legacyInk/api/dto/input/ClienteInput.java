@@ -1,12 +1,12 @@
 package com.legacyInk.api.dto.input;
 
-import com.legacyInk.domain.model.Endereco;
 import com.legacyInk.domain.model.enums.Sexo;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 @Getter
 @Setter
@@ -17,13 +17,12 @@ public class ClienteInput {
     private String email;
     @NotBlank
     private String telefone;
-    @NotBlank
+    @NotNull
     private LocalDate dataNascimento;
     @Valid
-    @NotBlank
-    private Endereco endereco;
-    @NotBlank
+    private EnderecoInput endereco;
+    @NotNull
     private Integer idade;
-    @NotBlank
+    @NotNull
     private Sexo sexo;
 }
