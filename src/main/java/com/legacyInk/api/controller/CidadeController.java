@@ -56,7 +56,7 @@ public class CidadeController {
         return converter.paraDTO(cidadeAtualizada);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{cidadeId}")
     public void deletaCidade(@PathVariable Long cidadeId) {
         cidadeService.deleta(cidadeId);
     }
