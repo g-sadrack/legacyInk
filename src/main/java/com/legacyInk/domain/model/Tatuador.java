@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,12 @@ public class Tatuador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "especialidade")
     @ElementCollection(targetClass = Especialidade.class)
-    private List<Especialidade> especialidades;
+    @CollectionTable(name = "tatuador_especialidades", joinColumns = @JoinColumn(name = "tatuador_id"))
+    private List<Especialidade> especialidades = new ArrayList<>();
     private Integer tempoExperiencia;
     private BigDecimal avaliacao;
 

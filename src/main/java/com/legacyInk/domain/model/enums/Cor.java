@@ -1,6 +1,6 @@
 package com.legacyInk.domain.model.enums;
 
 public enum Cor {
-    COLORIDA,
+    COLORIDO,
     PRETO_E_BRANCO
 }

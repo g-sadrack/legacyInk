@@ -4,10 +4,7 @@ import com.legacyInk.domain.model.enums.Cor;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -30,6 +27,7 @@ public class Tatuagem {
     @NotBlank
     private String localizacaoNoCorpo;
     @NotBlank
+    @Column(name = "imagem_url")
     private String imagem;
     @NotBlank
     private BigDecimal preco;
