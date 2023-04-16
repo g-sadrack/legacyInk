@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -20,16 +19,12 @@ public class Tatuagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descricao;
-    @NotBlank
     private Integer tamanho;
-    @NotBlank
+    @Enumerated(EnumType.STRING)
     private Cor cor;
-    @NotBlank
     private String localizacaoNoCorpo;
-    @NotBlank
     @Column(name = "imagem_url")
     private String imagem;
-    @NotBlank
     private BigDecimal preco;
 
     @Override
@@ -44,4 +39,5 @@ public class Tatuagem {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

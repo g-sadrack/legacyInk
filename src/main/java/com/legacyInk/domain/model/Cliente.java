@@ -23,6 +23,7 @@ public class Cliente {
     @Embedded
     private Endereco endereco;
     private Integer idade;
+    @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
 }

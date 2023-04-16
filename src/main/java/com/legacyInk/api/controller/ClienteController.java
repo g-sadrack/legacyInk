@@ -5,6 +5,7 @@ import com.legacyInk.api.dto.ClienteDTO;
 import com.legacyInk.api.dto.input.ClienteInput;
 import com.legacyInk.api.dtoconverter.ClienteDTOConverter;
 import com.legacyInk.domain.model.Cliente;
+import com.legacyInk.domain.repository.ClienteRepository;
 import com.legacyInk.domain.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private ClienteDTOConverter converter;
@@ -27,13 +31,12 @@ public class ClienteController {
 
     @GetMapping
     public List<ClienteDTO> listar() {
-        List<Cliente> listar = clienteService.listar();
-        return converter.paraDTOLista(listar);
+        return converter.paraDTOLista(clienteRepository.findAll());
     }
 
-    @GetMapping("/{usuarioId}")
-    public ClienteDTO listar(@PathVariable Long usuarioId) {
-        Cliente cliente = clienteService.validaUsuarioOuErro(usuarioId);
+    @GetMapping("/{clienteId}")
+    public ClienteDTO listar(@PathVariable Long clienteId) {
+        Cliente cliente = clienteService.validaUsuarioOuErro(clienteId);
         return converter.paraDTO(cliente);
     }
 
@@ -44,17 +47,17 @@ public class ClienteController {
         return converter.paraDTO(cliente);
     }
 
-    @PutMapping("/{usuarioId}")
-    public ClienteDTO alterar(@PathVariable Long usuarioId, @Validated @RequestBody ClienteInput clienteInput) {
-        Cliente cliente = clienteService.validaUsuarioOuErro(usuarioId);
+    @PutMapping("/{clienteId}")
+    public ClienteDTO alterar(@PathVariable Long clienteId, @Validated @RequestBody ClienteInput clienteInput) {
+        Cliente cliente = clienteService.validaUsuarioOuErro(clienteId);
         convertido.copiaDTOparaModeloDominio(clienteInput, cliente);
         Cliente clienteAtualizado = clienteService.cadastrar(cliente);
         return converter.paraDTO(clienteAtualizado);
     }
 
-    @DeleteMapping("/{usuarioId}")
-    public void deleta(@PathVariable Long usuarioId) {
-        clienteService.deletar(usuarioId);
+    @DeleteMapping("/{clienteId}")
+    public void deleta(@PathVariable Long clienteId) {
+        clienteService.deletar(clienteId);
     }
 
 }
