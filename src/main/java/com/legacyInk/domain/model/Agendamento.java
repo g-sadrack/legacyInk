@@ -25,9 +25,9 @@ public class Agendamento {
     @ManyToOne
     @JoinColumn(name = "tatuagem_id")
     private Tatuagem tatuagem;
-   @ManyToOne
-   @JoinColumn(name = "tatuador_id")
-   private Tatuador tatuador;
+    @ManyToOne
+    @JoinColumn(name = "tatuador_id")
+    private Tatuador tatuador;
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status;
     private LocalDateTime dataHora;
