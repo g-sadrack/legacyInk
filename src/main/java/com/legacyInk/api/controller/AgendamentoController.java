@@ -1,6 +1,6 @@
 package com.legacyInk.api.controller;
 
-import com.legacyInk.api.domainconverter.AgendamentoDTOConvertido;
+import com.legacyInk.api.domainconverter.AgendamentoConvertido;
 import com.legacyInk.api.dto.AgendamentoDTO;
 import com.legacyInk.api.dto.input.AgendamentoInput;
 import com.legacyInk.api.dtoconverter.AgendamentoDTOConverter;
@@ -21,7 +21,7 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoDTOConverter converter;
     @Autowired
-    private AgendamentoDTOConvertido convertido;
+    private AgendamentoConvertido convertido;
 
     @GetMapping
     public List<AgendamentoDTO> listar() {

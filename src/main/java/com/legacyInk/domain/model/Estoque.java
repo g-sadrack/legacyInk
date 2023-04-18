@@ -17,7 +17,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class ItemEstoque {
+public class Estoque {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class ItemEstoque {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ItemEstoque that = (ItemEstoque) o;
+        Estoque that = (Estoque) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class AgendamentoDTOConvertido {
+public class AgendamentoConvertido {
 
     @Autowired
     private ModelMapper modelMapper;

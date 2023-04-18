@@ -1,8 +1,8 @@
 package com.legacyInk.domain.service;
 
 import com.legacyInk.domain.exception.EntidadeNaoEncontradaException;
-import com.legacyInk.domain.model.Agendamento;
-import com.legacyInk.domain.repository.AgendamentoRepository;
+import com.legacyInk.domain.model.Estoque;
+import com.legacyInk.domain.repository.EstoqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,34 +10,33 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class AgendamentoService {
+public class EstoqueService {
 
     @Autowired
-    private AgendamentoRepository agendamentoRepository;
+    private EstoqueRepository estoqueRepository;
 
-    public static final String MSG_AGENDAMENTO_NAO_ENCONTRADO = "O Agendamento de ID %d , não consta no sistema";
+    public static final String MSG_AGENDAMENTO_NAO_ENCONTRADO = "O item de ID %d , não consta no sistema";
 
 
-    public Agendamento validaEnderecoOuErro(Long agendamentoId) {
-        return agendamentoRepository.findById(agendamentoId)
+    public Estoque validaEnderecoOuErro(Long estoqueId) {
+        return estoqueRepository.findById(estoqueId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_AGENDAMENTO_NAO_ENCONTRADO, agendamentoId)));
+                        String.format(MSG_AGENDAMENTO_NAO_ENCONTRADO, estoqueId)));
     }
 
 
-    public List<Agendamento> listar() {
-        return agendamentoRepository.findAll();
-    }
-
-    @Transactional
-    public Agendamento cadastrar(Agendamento agendamento) {
-        return agendamentoRepository.save(agendamento);
+    public List<Estoque> listar() {
+        return estoqueRepository.findAll();
     }
 
     @Transactional
-    public void deleta(Long agendamentoId) {
-        agendamentoRepository.deleteById(agendamentoId);
+    public Estoque cadastrar(Estoque estoque) {
+        return estoqueRepository.save(estoque);
     }
 
+    @Transactional
+    public void deletar(Long estoqueId) {
+        estoqueRepository.deleteById(estoqueId);
+    }
 
 }
