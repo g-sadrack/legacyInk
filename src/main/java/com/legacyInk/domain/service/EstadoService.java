@@ -1,6 +1,6 @@
 package com.legacyInk.domain.service;
 
-import com.legacyInk.domain.exception.EstadoIdNaoEncontradoException;
+import com.legacyInk.domain.exception.EstadoNaoEncontradoException;
 import com.legacyInk.domain.model.Estado;
 import com.legacyInk.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class EstadoService {
 
     public Estado validaEstadoOuErro(Long estadoId) {
         return estadoRepository.findById(estadoId)
-                .orElseThrow(() -> new EstadoIdNaoEncontradoException(
+                .orElseThrow(() -> new EstadoNaoEncontradoException(
                         String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId)));
     }
 
@@ -37,7 +37,7 @@ public class EstadoService {
             estadoRepository.deleteById(estadoId);
             estadoRepository.flush();
         } catch (EmptyResultDataAccessException e) {
-            throw new EstadoIdNaoEncontradoException(String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId));
+            throw new EstadoNaoEncontradoException(String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId));
         }
     }
 }

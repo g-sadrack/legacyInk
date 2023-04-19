@@ -1,7 +1,7 @@
 package com.legacyInk.domain.service;
 
-import com.legacyInk.domain.exception.CidadeIdNaoEncontradoException;
-import com.legacyInk.domain.exception.EntidadeNaoEncontradaException;
+import com.legacyInk.domain.exception.CidadeNaoEncontradaException;
+import com.legacyInk.domain.exception.EntidadeEmUsoException;
 import com.legacyInk.domain.model.Cidade;
 import com.legacyInk.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class CidadeService {
 
     public Cidade validaEnderecoOuErro(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)
-                .orElseThrow(() -> new CidadeIdNaoEncontradoException(
+                .orElseThrow(() -> new CidadeNaoEncontradaException(
                         String.format(MSG_CIDADE_NAO_CONSTA_NO_SISTEMA, cidadeId)));
     }
 
@@ -43,9 +43,9 @@ public class CidadeService {
         try {
             cidadeRepository.deleteById(cidadeId);
         } catch (EmptyResultDataAccessException e) {
-            throw new CidadeIdNaoEncontradoException(String.format(MSG_CIDADE_NAO_CONSTA_NO_SISTEMA, cidadeId));
+            throw new CidadeNaoEncontradaException(cidadeId);
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CONSTA_NO_SISTEMA, cidadeId));
+            throw new EntidadeEmUsoException(String.format(MSG_CIDADE_NAO_CONSTA_NO_SISTEMA, cidadeId));
         }
     }
 }

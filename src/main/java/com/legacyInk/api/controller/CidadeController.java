@@ -4,7 +4,7 @@ import com.legacyInk.api.domainconverter.CidadeConvertido;
 import com.legacyInk.api.dto.CidadeDTO;
 import com.legacyInk.api.dto.input.CidadeInput;
 import com.legacyInk.api.dtoconverter.CidadeDTOConverter;
-import com.legacyInk.domain.exception.EstadoIdNaoEncontradoException;
+import com.legacyInk.domain.exception.EstadoNaoEncontradoException;
 import com.legacyInk.domain.exception.NegocioException;
 import com.legacyInk.domain.model.Cidade;
 import com.legacyInk.domain.service.CidadeService;
@@ -43,7 +43,7 @@ public class CidadeController {
         try {
             Cidade cidade = convertido.paraModelo(cidadeInput);
             return converter.paraDTO(cidadeService.cadastrar(cidade));
-        } catch (EstadoIdNaoEncontradoException e) {
+        } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }

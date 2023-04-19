@@ -16,7 +16,7 @@ public class EstoqueConvertido {
         return modelMapper.map(estoqueInput, Estoque.class);
     }
 
-    public void copiaDTOparaModeloDominio(Estoque estoqueInput, Estoque estoque) {
+    public void copiaDTOparaModeloDominio(EstoqueInput estoqueInput, Estoque estoque) {
         modelMapper.map(estoqueInput, estoque);
     }
 

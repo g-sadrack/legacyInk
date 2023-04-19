@@ -1,9 +1,10 @@
 package com.legacyInk.domain.service;
 
-import com.legacyInk.domain.exception.EntidadeNaoEncontradaException;
+import com.legacyInk.domain.exception.AgendamentoNaoEncontradoException;
 import com.legacyInk.domain.model.Agendamento;
 import com.legacyInk.domain.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,7 +21,7 @@ public class AgendamentoService {
 
     public Agendamento validaEnderecoOuErro(Long agendamentoId) {
         return agendamentoRepository.findById(agendamentoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                .orElseThrow(() -> new AgendamentoNaoEncontradoException(
                         String.format(MSG_AGENDAMENTO_NAO_ENCONTRADO, agendamentoId)));
     }
 
@@ -36,7 +37,13 @@ public class AgendamentoService {
 
     @Transactional
     public void deleta(Long agendamentoId) {
-        agendamentoRepository.deleteById(agendamentoId);
+        try {
+            agendamentoRepository.deleteById(agendamentoId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new AgendamentoNaoEncontradoException(
+                    String.format(MSG_AGENDAMENTO_NAO_ENCONTRADO, agendamentoId)
+            );
+        }
     }
 
 

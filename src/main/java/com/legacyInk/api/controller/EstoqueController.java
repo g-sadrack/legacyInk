@@ -1,6 +1,5 @@
 package com.legacyInk.api.controller;
 
-
 import com.legacyInk.api.domainconverter.EstoqueConvertido;
 import com.legacyInk.api.dto.EstoqueDTO;
 import com.legacyInk.api.dto.input.EstoqueInput;
@@ -33,28 +32,28 @@ public class EstoqueController {
         return converter.paraDTOLista(estoques);
     }
 
-    @GetMapping("/{estoqueId}")
-    public EstoqueDTO buscar(Long estoqueId) {
-        Estoque estoque = estoqueService.validaEnderecoOuErro(estoqueId);
+    @GetMapping("/{itemId}")
+    public EstoqueDTO buscar(@PathVariable Long itemId) {
+        Estoque estoque = estoqueService.encontraItemOuErro(itemId);
         return converter.paraDTO(estoque);
     }
 
     @PostMapping
-    public EstoqueDTO cadastrar(@Validated @RequestBody EstoqueInput estoqueInput) {
-        Estoque estoque = convertido.paraModelo(estoqueInput);
+    public EstoqueDTO cadastrar(@Validated @RequestBody EstoqueInput itemInput) {
+        Estoque estoque = convertido.paraModelo(itemInput);
         return converter.paraDTO(estoqueService.cadastrar(estoque));
     }
 
-    @PutMapping("/{estoqueId}")
-    public EstoqueDTO alterar(@PathVariable Long estoqueId, @Validated @RequestBody Estoque estoqueInput) {
-        Estoque estoque = estoqueService.validaEnderecoOuErro(estoqueId);
-        convertido.copiaDTOparaModeloDominio(estoqueInput, estoque);
+    @PutMapping("/{itemId}")
+    public EstoqueDTO alterar(@PathVariable Long itemId, @Validated @RequestBody EstoqueInput itemInput) {
+        Estoque estoque = estoqueService.encontraItemOuErro(itemId);
+        convertido.copiaDTOparaModeloDominio(itemInput, estoque);
         return converter.paraDTO(estoqueService.cadastrar(estoque));
     }
 
-    @DeleteMapping("/{estoqueId}")
-    public void deleta(@PathVariable Long estoqueId) {
-        estoqueService.deletar(estoqueId);
+    @DeleteMapping("/{itemId}")
+    public void deleta(@PathVariable Long itemId) {
+        estoqueService.deletar(itemId);
     }
 
 }

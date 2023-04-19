@@ -1,6 +1,6 @@
 package com.legacyInk.domain.service;
 
-import com.legacyInk.domain.exception.ClienteIdNaoEncontradoException;
+import com.legacyInk.domain.exception.ClienteNaoEncontradoException;
 import com.legacyInk.domain.model.Cliente;
 import com.legacyInk.domain.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ClienteService {
 
     public Cliente validaUsuarioOuErro(Long clienteId) {
         return clienteRepository.findById(clienteId).orElseThrow(
-                () -> new ClienteIdNaoEncontradoException(String.format(MSG_CLIENTE_INEXISTENTE, clienteId)));
+                () -> new ClienteNaoEncontradoException(String.format(MSG_CLIENTE_INEXISTENTE, clienteId)));
     }
 
     public List<Cliente> listar() {
@@ -41,7 +41,7 @@ public class ClienteService {
         try {
             clienteRepository.deleteById(clienteId);
         } catch (EmptyResultDataAccessException e) {
-            throw new ClienteIdNaoEncontradoException(String.format(MSG_CLIENTE_INEXISTENTE, clienteId));
+            throw new ClienteNaoEncontradoException(String.format(MSG_CLIENTE_INEXISTENTE, clienteId));
         }
     }
 }
