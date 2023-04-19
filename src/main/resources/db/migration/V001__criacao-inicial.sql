@@ -37,7 +37,6 @@ CREATE TABLE tatuagem (
     primary key (id)
 ) ENGINE = InnoDB;
 
-
 CREATE TABLE cliente (
     id BIGINT NOT NULL AUTO_INCREMENT,
     idade INTEGER,
