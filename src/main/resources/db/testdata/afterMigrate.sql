@@ -10,6 +10,8 @@ delete from agendamento;
 delete from estudio;
 delete from estudio_clientes;
 delete from estudio_tatuadores;
+delete from item;
+delete from estudio_estoque;
 
 set foreign_key_checks = 1;
 
@@ -23,6 +25,7 @@ alter table agendamento auto_increment = 1;
 alter table estudio auto_increment = 1;
 alter table estudio_clientes auto_increment = 1;
 alter table estudio_tatuadores auto_increment = 1;
+alter table item auto_increment = 1;
 
 -- estado
 INSERT INTO estado (nome) VALUES ('São Paulo');
@@ -76,3 +79,15 @@ insert into `estudio_clientes` (`cliente_id`, `estudio_id`) values ('2', '1');
 insert into `estudio_tatuadores` (`estudio_id`, `tatuador_id`) values ('1', '1');
 insert into `estudio_tatuadores` (`estudio_id`, `tatuador_id`) values ('1', '2');
 insert into `estudio_tatuadores` (`estudio_id`, `tatuador_id`) values ('1', '3');
+
+-- item
+insert into`item` (`data_atualizacao`, `data_cadastro`, `descricao`, `nome`, `quantidade`) values ('2023-04-25 00:00:00','2023-04-25 00:00:00','tinta parapreta para tatuagem','tinta','5');
+insert into`item` (`data_atualizacao`, `data_cadastro`, `descricao`, `nome`, `quantidade`) values ('2023-04-25 00:00:00','2023-04-25 00:00:00','agulha preta para tatuagem','agulha','10');
+
+
+-- estudio_estoque
+insert into `estudio_estoque` (`estudio_id`, `item_id`) values ('2', '1');
+insert into `estudio_estoque` (`estudio_id`, `item_id`) values ('2', '2');
+insert into `estudio_estoque` (`estudio_id`, `item_id`) values ('1', '2');
+
+

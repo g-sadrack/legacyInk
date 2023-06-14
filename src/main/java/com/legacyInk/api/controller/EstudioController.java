@@ -26,32 +26,32 @@ public class EstudioController {
     private EstudioConvertido convertido;
 
     @GetMapping("/{estudioId}")
-    public EstudioDTO buscar (@PathVariable Long estudioId) {
+    public EstudioDTO buscar(@PathVariable Long estudioId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         return converter.paraDTO(estudio);
     }
 
     @GetMapping
-    public List<EstudioDTO> listar () {
+    public List<EstudioDTO> listar() {
         List<Estudio> estudios = estudioService.listarEstudios();
         return converter.paraDTOLista(estudios);
     }
 
     @PostMapping
-    public EstudioDTO cadastra (@Validated @RequestBody EstudioInput estudioInput) {
+    public EstudioDTO cadastra(@Validated @RequestBody EstudioInput estudioInput) {
         Estudio estudio = convertido.paraModelo(estudioInput);
         return converter.paraDTO(estudioService.adicionar(estudio));
     }
 
     @PutMapping("/{estudioId}")
-    public EstudioDTO altera (@PathVariable Long estudioId, @Validated @RequestBody EstudioInput estudioInput) {
+    public EstudioDTO altera(@PathVariable Long estudioId, @Validated @RequestBody EstudioInput estudioInput) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         convertido.copiaDTOparaModeloDominio(estudioInput, estudio);
         return converter.paraDTO(estudioService.adicionar(estudio));
     }
 
     @DeleteMapping("/{estudioId}")
-    public void remove (@PathVariable Long estudioId) {
+    public void remove(@PathVariable Long estudioId) {
         estudioService.remover(estudioId);
     }
 

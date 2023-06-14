@@ -2,7 +2,8 @@ package com.legacyInk.domain.service;
 
 import com.legacyInk.domain.exception.EntidadeEmUsoException;
 import com.legacyInk.domain.exception.ItemNaoEncontradoException;
-import com.legacyInk.domain.model.Estoque;
+import com.legacyInk.domain.model.Estudio;
+import com.legacyInk.domain.model.Item;
 import com.legacyInk.domain.repository.EstoqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,35 +19,56 @@ public class EstoqueService {
     @Autowired
     private EstoqueRepository estoqueRepository;
 
+    @Autowired
+    private EstudioService estudioService;
+
     public static final String MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE = "O item de ID %d , não consta no estoque";
 
-    public Estoque encontraItemOuErro(Long itemId) {
-        return estoqueRepository.findById(itemId)
-                .orElseThrow(() -> new ItemNaoEncontradoException(
-                        String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, itemId)));
-    }
-
-
-
-    public List<Estoque> listar() {
-        return estoqueRepository.findAll();
+    @Transactional
+    public Item salvaItem(Long itemId) {
+        Item item = this.validaProduto(itemId);
+        return estoqueRepository.save(item);
     }
 
     @Transactional
-    public Estoque cadastrar(Estoque estoque) {
-        return estoqueRepository.save(estoque);
-    }
-
-    @Transactional
-    public void deletar(Long estoqueId) {
+    public void deletar (Long estudioId, Long estoqueId) {
         try {
+            Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+            Item item = validaProduto(estoqueId);
+            estudio.removerItem(item);
             estoqueRepository.deleteById(estoqueId);
         } catch (EmptyResultDataAccessException e) {
-            throw new ItemNaoEncontradoException(
-                    String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, estoqueId));
+            throw new ItemNaoEncontradoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, estoqueId));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, estoqueId));
         }
+    }
+
+    public Item buscaProduto(Long estudioId, Long itemId) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        for (Item item : estudio.getEstoque()) {
+            if (item.getId().equals(itemId)) {
+                return item;
+            }
+        }
+        throw new ItemNaoEncontradoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, itemId));
+    }
+
+    @Transactional
+    public Item associaItemAoEstoqueEstudio(Long estudioId, Item item) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        estoqueRepository.save(item);
+        estudio.adicionarItem(item);
+        return item;
+    }
+
+    public List<Item> listar(Long estudioId) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        return estudio.getEstoque();
+    }
+
+    public Item validaProduto(Long itemId) {
+        return estoqueRepository.findById(itemId).orElseThrow(() -> new ItemNaoEncontradoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, itemId)));
     }
 
 }

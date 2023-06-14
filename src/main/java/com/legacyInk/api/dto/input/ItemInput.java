@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EstoqueInput {
+public class ItemInput {
     private String nome;
     private String descricao;
     private Integer quantidade;

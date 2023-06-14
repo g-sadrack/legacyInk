@@ -26,6 +26,13 @@ public class Estudio {
     private LocalDate horario;
 
     @OneToMany
+    @JoinTable(name = "estudio_estoque",
+            joinColumns = @JoinColumn(name = "estudio_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id"))
+    @ToString.Exclude
+    private List<Item> estoque = new ArrayList<>();
+
+    @OneToMany
     @JoinTable(name = "estudio_tatuadores",
             joinColumns = @JoinColumn(name = "estudio_id"),
             inverseJoinColumns = @JoinColumn(name = "tatuador_id"))
@@ -41,5 +48,13 @@ public class Estudio {
 
     @Embedded
     private Endereco endereco;
+
+    public void adicionarItem(Item item) {
+        estoque.add(item);
+    }
+
+    public void removerItem(Item item) {
+        estoque.remove(item);
+    }
 
 }
