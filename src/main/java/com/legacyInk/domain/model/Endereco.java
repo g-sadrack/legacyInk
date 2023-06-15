@@ -1,9 +1,14 @@
 package com.legacyInk.domain.model;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Embeddable
 public class Endereco {

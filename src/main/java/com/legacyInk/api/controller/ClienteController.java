@@ -36,7 +36,7 @@ public class ClienteController {
 
     @GetMapping("/{clienteId}")
     public ClienteDTO listar(@PathVariable Long clienteId) {
-        Cliente cliente = clienteService.validaUsuarioOuErro(clienteId);
+        Cliente cliente = clienteService.validaClienteOuErro(clienteId);
         return converter.paraDTO(cliente);
     }
 
@@ -49,7 +49,7 @@ public class ClienteController {
 
     @PutMapping("/{clienteId}")
     public ClienteDTO alterar(@PathVariable Long clienteId, @Validated @RequestBody ClienteInput clienteInput) {
-        Cliente cliente = clienteService.validaUsuarioOuErro(clienteId);
+        Cliente cliente = clienteService.validaClienteOuErro(clienteId);
         convertido.copiaDTOparaModeloDominio(clienteInput, cliente);
         Cliente clienteAtualizado = clienteService.cadastrar(cliente);
         return converter.paraDTO(clienteAtualizado);

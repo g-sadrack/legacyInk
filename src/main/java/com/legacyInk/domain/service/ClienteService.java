@@ -21,7 +21,7 @@ public class ClienteService {
     private CidadeService cidadeService;
 
 
-    public Cliente validaUsuarioOuErro(Long clienteId) {
+    public Cliente validaClienteOuErro(Long clienteId) {
         return clienteRepository.findById(clienteId).orElseThrow(
                 () -> new ClienteNaoEncontradoException(String.format(MSG_CLIENTE_INEXISTENTE, clienteId)));
     }

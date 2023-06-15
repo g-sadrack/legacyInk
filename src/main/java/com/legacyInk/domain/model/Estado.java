@@ -11,7 +11,8 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Estado {
     @Id
     @EqualsAndHashCode.Include
