@@ -19,7 +19,7 @@ public class CidadeService {
     @Autowired
     private EstadoService estadoService;
 
-    public Cidade validaEnderecoOuErro(Long cidadeId) {
+    public Cidade validaCidadeOuErro(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)
                 .orElseThrow(() -> new CidadeNaoEncontradaException(
                         String.format(MSG_CIDADE_NAO_CONSTA_NO_SISTEMA, cidadeId)));

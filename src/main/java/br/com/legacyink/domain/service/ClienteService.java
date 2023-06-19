@@ -22,8 +22,9 @@ public class ClienteService {
 
 
     public Cliente validaClienteOuErro(Long clienteId) {
-        return clienteRepository.findById(clienteId).orElseThrow(
-                () -> new ClienteNaoEncontradoException(String.format(MSG_CLIENTE_INEXISTENTE, clienteId)));
+        return clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new ClienteNaoEncontradoException(
+                        String.format(MSG_CLIENTE_INEXISTENTE, clienteId)));
     }
 
     public List<Cliente> listar() {
@@ -33,7 +34,7 @@ public class ClienteService {
     @Transactional
     public Cliente cadastrar(Cliente cliente) {
         Long cidadeId = cliente.getEndereco().getCidade().getId();
-        cidadeService.validaEnderecoOuErro(cidadeId);
+        cidadeService.validaCidadeOuErro(cidadeId);
         return clienteRepository.save(cliente);
     }
 

@@ -8,7 +8,6 @@ import javax.validation.Valid;
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Cidade {
     @Id
@@ -20,11 +19,6 @@ public class Cidade {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Estado estado;
-
-    public Cidade(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
 
     public Cidade(Long id, String nome, Estado estado) {
         this.id = id;

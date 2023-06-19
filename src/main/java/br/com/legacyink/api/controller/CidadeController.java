@@ -29,7 +29,7 @@ public class CidadeController {
 
     @GetMapping("/{cidadeId}")
     public CidadeDTO busca(@PathVariable Long cidadeId) {
-        Cidade cidade = cidadeService.validaEnderecoOuErro(cidadeId);
+        Cidade cidade = cidadeService.validaCidadeOuErro(cidadeId);
         return converter.paraDTO(cidade);
     }
 
@@ -50,7 +50,7 @@ public class CidadeController {
 
     @PutMapping("/{cidadeId}")
     public CidadeDTO atualizar(@PathVariable Long cidadeId, @Validated @RequestBody CidadeInput cidadeInput) {
-        Cidade cidade = cidadeService.validaEnderecoOuErro(cidadeId);
+        Cidade cidade = cidadeService.validaCidadeOuErro(cidadeId);
         convertido.copiaDTOparaModeloDominio(cidadeInput, cidade);
         Cidade cidadeAtualizada = cidadeService.cadastrar(cidade);
         return converter.paraDTO(cidadeAtualizada);
