@@ -1,5 +1,7 @@
 package br.com.legacyink.domain.service;
 
+import br.com.legacyink.api.domainconverter.TatuadorConvertido;
+import br.com.legacyink.api.dto.input.TatuadorInput;
 import br.com.legacyink.domain.exception.TatuadorNaoEncontradoException;
 import br.com.legacyink.domain.model.Estudio;
 import br.com.legacyink.domain.model.Tatuador;
@@ -21,6 +23,9 @@ public class TatuadorService {
     @Autowired
     private EstudioService estudioService;
 
+    @Autowired
+    private TatuadorConvertido convertido;
+
 
     public Tatuador validaTatuadorOuErro(Long tatuadorId) {
         return tatuadorRepository.findById(tatuadorId)
@@ -29,44 +34,35 @@ public class TatuadorService {
     }
 
 
-    public Tatuador buscaTatuador(Long estudioId, Long tatuadorId) {
+    public Tatuador buscaTatuadorNoEstudio(Long estudioId, Long tatuadorId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
 
-        for (Tatuador tatuador : estudio.getTatuadores()) {
-            if (tatuador.getId().equals(tatuadorId)) {
-                return tatuador;
-            }
-        }
-
-        return null;
+        return estudio.getTatuadores().stream()
+                .filter(tatuador -> tatuador.getId().equals(tatuadorId))
+                .findFirst()
+                .orElseThrow(() -> new TatuadorNaoEncontradoException(
+                        String.format("O Tatuador de ID %d não consta no sistema ou não faz parte desse estudio", tatuadorId)));
     }
 
     public List<Tatuador> listarTatuadores(Long estudioId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-
         if (estudio.getId() != null) {
             return estudio.getTatuadores();
         }
-
         return Collections.emptyList();
     }
 
     @Transactional
-    public Tatuador cadastra(Tatuador tatuador) {
+    public Tatuador cadastra(Long estudioId, Tatuador tatuador) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        estudio.associarTatuador(tatuador);
         return tatuadorRepository.save(tatuador);
     }
 
-    /*
-    TODO
     @Transactional
-    public void deletar(Long tatuadorId) {
-        try {
-            tatuadorRepository.deleteById(tatuadorId);
-        } catch (EmptyResultDataAccessException e) {
-            throw new TatuadorNaoEncontradoException(String.format(MSG_TATUADOR_NAO_CONSTA_NO_SISTEMA, tatuadorId));
-        } catch (DataIntegrityViolationException e){
-            throw new EntidadeEmUsoException(String.format("O Tatuador de ID %d está vinculado a algum estudio",tatuadorId));
-        }
-
-    }*/
+    public Tatuador atualiza(Long estudioId, Long tatuadorId, TatuadorInput tatuadorInput) {
+        Tatuador tatuador = this.buscaTatuadorNoEstudio(estudioId, tatuadorId);
+        convertido.copiaDTOparaModeloDominio(tatuadorInput, tatuador);
+        return tatuadorRepository.save(tatuador);
+    }
 }

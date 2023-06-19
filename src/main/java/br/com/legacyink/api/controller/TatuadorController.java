@@ -27,7 +27,7 @@ public class TatuadorController {
 
     @GetMapping("/{tatuadorId}")
     public TatuadorDTO buscar(@PathVariable Long estudioId, @PathVariable Long tatuadorId) {
-        Tatuador tatuador = tatuadorService.buscaTatuador(estudioId, tatuadorId);
+        Tatuador tatuador = tatuadorService.buscaTatuadorNoEstudio(estudioId, tatuadorId);
         return converter.paraDTO(tatuador);
     }
 
@@ -38,16 +38,14 @@ public class TatuadorController {
     }
 
     @PostMapping
-    public TatuadorDTO cadastrar(@Validated @RequestBody TatuadorInput tatuadorInput) {
+    public TatuadorDTO cadastrar(@PathVariable Long estudioId, @Validated @RequestBody TatuadorInput tatuadorInput) {
         Tatuador tatuador = convertido.paraModelo(tatuadorInput);
-        return converter.paraDTO(tatuadorService.cadastra(tatuador));
+        return converter.paraDTO(tatuadorService.cadastra(estudioId, tatuador));
     }
 
     @PutMapping("/{tatuadorId}")
-    public TatuadorDTO cadastrar(@PathVariable Long tatuadorId, @Validated @RequestBody TatuadorInput tatuadorInput) {
-        Tatuador tatuador = tatuadorService.validaTatuadorOuErro(tatuadorId);
-        convertido.copiaDTOparaModeloDominio(tatuadorInput, tatuador);
-        return converter.paraDTO(tatuadorService.cadastra(tatuador));
+    public TatuadorDTO atualizar(@PathVariable Long estudioId, @PathVariable Long tatuadorId, @Validated @RequestBody TatuadorInput tatuadorInput) {
+        Tatuador tatuador = tatuadorService.atualiza(estudioId, tatuadorId, tatuadorInput);
+        return converter.paraDTO(tatuador);
     }
-
 }

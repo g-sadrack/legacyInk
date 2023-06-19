@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Estudio {
@@ -58,4 +57,7 @@ public class Estudio {
         estoque.remove(item);
     }
 
+    public void associarTatuador(Tatuador tatuador) {
+        tatuadores.add(tatuador);
+    }
 }
