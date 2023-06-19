@@ -1,6 +1,7 @@
 package br.com.legacyink.domain.service;
 
 import br.com.legacyink.domain.exception.CidadeNaoEncontradaException;
+import br.com.legacyink.domain.exception.EstadoNaoEncontradoException;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.domain.repository.CidadeRepository;
@@ -28,6 +29,7 @@ class CidadeServiceTest {
     public static final int INDEX = 0;
     public static final String MSG_CIDADE_NAO_CONSTA_NO_SISTEMA = String.format("A cidade de ID %d , não consta no sistema", CIDADE_ID);
     public static final String NOME_ESTADO = "Goias";
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = String.format("O estado ID %d , não consta no sistema", 2L);
 
     @Mock
     private EstadoService estadoService;
@@ -91,6 +93,21 @@ class CidadeServiceTest {
         Cidade cadastrar = cidadeService.cadastrar(cidade);
 
         assertNotNull(cadastrar);
+    }
+
+    @Test
+    void quandoSalvarCidadeComEstadoInexistenteEntaoRetornaErro() {
+        Estado estadoInexistente = new Estado(2L, "Tangamandapio");
+
+        when(estadoService.validaEstadoOuErro(estadoInexistente.getId()))
+                .thenThrow(new EstadoNaoEncontradoException(MSG_ESTADO_NAO_ENCONTRADO));
+        cidade.setEstado(estadoInexistente);
+
+        EstadoNaoEncontradoException estadoNaoEncontradoException = assertThrows(
+                EstadoNaoEncontradoException.class, () -> cidadeService.cadastrar(cidade));
+
+        assertEquals(MSG_ESTADO_NAO_ENCONTRADO, estadoNaoEncontradoException.getMessage());
+
     }
 
     @Test
