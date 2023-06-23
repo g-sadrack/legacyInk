@@ -1,11 +1,10 @@
 package br.com.legacyink.domain.service;
 
-import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.domain.exception.EstadoNaoEncontradoException;
+import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.domain.repository.EstadoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,10 +26,9 @@ class EstadoServiceTest {
     public static final String NOME = "Goias";
     public static final String ESTADO_NAO_CONSTA_NO_SISTEMA = String.format("O estado ID %d , não consta no sistema", ID);
     public static final int INDEX = 0;
-    @InjectMocks
-    private EstadoService estadoService;
     @Mock
     private EstadoRepository estadoRepository;
+    private EstadoService estadoService;
 
     private Estado estado;
     private Optional<Estado> optionalEstado;
@@ -38,6 +36,7 @@ class EstadoServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        estadoService = new EstadoService(estadoRepository);
         startEstado();
     }
 

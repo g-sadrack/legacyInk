@@ -7,7 +7,6 @@ import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.domain.repository.CidadeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,13 +26,12 @@ class CidadeServiceTest {
     public static final long ID = 1L;
     public static final String NOME_CIDADE = "Goiania";
     public static final int INDEX = 0;
-    public static final String MSG_CIDADE_NAO_CONSTA_NO_SISTEMA = String.format("A cidade de ID %d , não consta no sistema", CIDADE_ID);
+    public static final String MSG_CIDADE_NAO_CONSTA_NO_SISTEMA = String.format("A cidade de ID %d, não consta no sistema", CIDADE_ID);
     public static final String NOME_ESTADO = "Goias";
-    public static final String MSG_ESTADO_NAO_ENCONTRADO = String.format("O estado ID %d , não consta no sistema", 2L);
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = String.format("O estado ID %d, não consta no sistema", 2L);
 
     @Mock
     private EstadoService estadoService;
-    @InjectMocks
     private CidadeService cidadeService;
     @Mock
     private CidadeRepository cidadeRepository;
@@ -45,6 +43,7 @@ class CidadeServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        cidadeService = new CidadeService(cidadeRepository, estadoService);
         startCidade();
     }
 
