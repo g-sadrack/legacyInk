@@ -13,11 +13,16 @@ import java.util.List;
 @Service
 public class CidadeService {
 
-    public static final String MSG_CIDADE_NAO_CONSTA_NO_SISTEMA = "A cidade de ID %d , não consta no sistema";
+    public static final String MSG_CIDADE_NAO_CONSTA_NO_SISTEMA = "A cidade de ID %d, não consta no sistema";
+
+    private final CidadeRepository cidadeRepository;
+    private final EstadoService estadoService;
+
     @Autowired
-    private CidadeRepository cidadeRepository;
-    @Autowired
-    private EstadoService estadoService;
+    public CidadeService(CidadeRepository cidadeRepository, EstadoService estadoService) {
+        this.cidadeRepository = cidadeRepository;
+        this.estadoService = estadoService;
+    }
 
     public Cidade validaCidadeOuErro(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)

@@ -16,32 +16,30 @@ import java.util.List;
 @Service
 public class TatuadorService {
 
-    public static final String MSG_TATUADOR_NAO_CONSTA_NO_SISTEMA = "Tatuador com o ID %d não consta no sistema";
-    @Autowired
-    private TatuadorRepository tatuadorRepository;
+    public static final String MSG_TATUADOR_NAO_CONSTA_NO_SISTEMA = "O Tatuador de ID %d não consta no sistema ou não faz parte desse estudio";
+
+    private final TatuadorRepository tatuadorRepository;
+
+    private final EstudioService estudioService;
+
+    private final TatuadorConvertido convertido;
 
     @Autowired
-    private EstudioService estudioService;
-
-    @Autowired
-    private TatuadorConvertido convertido;
-
-
-    public Tatuador validaTatuadorOuErro(Long tatuadorId) {
-        return tatuadorRepository.findById(tatuadorId)
-                .orElseThrow(() -> new TatuadorNaoEncontradoException(
-                        String.format(MSG_TATUADOR_NAO_CONSTA_NO_SISTEMA, tatuadorId)));
+    public TatuadorService(TatuadorRepository tatuadorRepository, EstudioService estudioService, TatuadorConvertido convertido) {
+        this.tatuadorRepository = tatuadorRepository;
+        this.estudioService = estudioService;
+        this.convertido = convertido;
     }
 
 
     public Tatuador buscaTatuadorNoEstudio(Long estudioId, Long tatuadorId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-
+        tatuadorRepository.findById(tatuadorId);
         return estudio.getTatuadores().stream()
                 .filter(tatuador -> tatuador.getId().equals(tatuadorId))
                 .findFirst()
                 .orElseThrow(() -> new TatuadorNaoEncontradoException(
-                        String.format("O Tatuador de ID %d não consta no sistema ou não faz parte desse estudio", tatuadorId)));
+                        String.format(MSG_TATUADOR_NAO_CONSTA_NO_SISTEMA, tatuadorId)));
     }
 
     public List<Tatuador> listarTatuadores(Long estudioId) {
@@ -56,7 +54,8 @@ public class TatuadorService {
     public Tatuador cadastra(Long estudioId, Tatuador tatuador) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         estudio.associarTatuador(tatuador);
-        return tatuadorRepository.save(tatuador);
+        Tatuador tatuadorSalvo = tatuadorRepository.save(tatuador);
+        return tatuadorSalvo;
     }
 
     @Transactional

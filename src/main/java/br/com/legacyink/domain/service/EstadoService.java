@@ -13,12 +13,17 @@ import java.util.List;
 @Service
 public class EstadoService {
     public static final String MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA = "O estado ID %d , não consta no sistema";
+    private final EstadoRepository estadoRepository;
+
     @Autowired
-    private EstadoRepository estadoRepository;
+    public EstadoService(EstadoRepository estadoRepository) {
+        this.estadoRepository = estadoRepository;
+    }
 
     public Estado validaEstadoOuErro(Long estadoId) {
         return estadoRepository.findById(estadoId)
-                .orElseThrow(() -> new EstadoNaoEncontradoException(String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId)));
+                .orElseThrow(() -> new EstadoNaoEncontradoException(
+                        String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId)));
     }
 
     public List<Estado> listar() {

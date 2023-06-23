@@ -13,8 +13,12 @@ import java.util.List;
 @Service
 public class AgendamentoService {
 
+    private final AgendamentoRepository agendamentoRepository;
+
     @Autowired
-    private AgendamentoRepository agendamentoRepository;
+    public AgendamentoService(AgendamentoRepository agendamentoRepository) {
+        this.agendamentoRepository = agendamentoRepository;
+    }
 
     public static final String MSG_AGENDAMENTO_NAO_ENCONTRADO = "O Agendamento de ID %d , não consta no sistema";
 

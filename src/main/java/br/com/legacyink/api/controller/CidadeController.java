@@ -1,13 +1,13 @@
 package br.com.legacyink.api.controller;
 
 import br.com.legacyink.api.domainconverter.CidadeConvertido;
+import br.com.legacyink.api.dto.CidadeDTO;
+import br.com.legacyink.api.dto.input.CidadeInput;
 import br.com.legacyink.api.dtoconverter.CidadeDTOConverter;
 import br.com.legacyink.domain.exception.EstadoNaoEncontradoException;
 import br.com.legacyink.domain.exception.NegocioException;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.service.CidadeService;
-import br.com.legacyink.api.dto.CidadeDTO;
-import br.com.legacyink.api.dto.input.CidadeInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

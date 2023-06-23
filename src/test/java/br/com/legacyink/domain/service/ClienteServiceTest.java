@@ -9,7 +9,6 @@ import br.com.legacyink.domain.model.enums.Sexo;
 import br.com.legacyink.domain.repository.ClienteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,16 +45,15 @@ class ClienteServiceTest {
 
     @Mock
     private CidadeService cidadeService;
-
     @Mock
     private ClienteRepository clienteRepository;
 
-    @InjectMocks
     private ClienteService clienteService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        clienteService = new ClienteService(clienteRepository, cidadeService);
         startClient();
     }
 

@@ -49,6 +49,19 @@ public class Estudio {
     @Embedded
     private Endereco endereco;
 
+    public Estudio(Long id, String nome, String telefone, String email, String cnpj, String razaoSocial,
+                   String redesSociais, LocalDate horario, Endereco endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.cnpj = cnpj;
+        this.razaoSocial = razaoSocial;
+        this.redesSociais = redesSociais;
+        this.horario = horario;
+        this.endereco = endereco;
+    }
+
     public void adicionarItem(Item item) {
         estoque.add(item);
     }

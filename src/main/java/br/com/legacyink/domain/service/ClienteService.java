@@ -14,12 +14,15 @@ import java.util.List;
 public class ClienteService {
 
     public static final String MSG_CLIENTE_INEXISTENTE = "O cliente de ID %d , não consta no sistema";
-    @Autowired
-    private ClienteRepository clienteRepository;
+
+    private final ClienteRepository clienteRepository;
+    private final CidadeService cidadeService;
 
     @Autowired
-    private CidadeService cidadeService;
-
+    public ClienteService(ClienteRepository clienteRepository, CidadeService cidadeService) {
+        this.clienteRepository = clienteRepository;
+        this.cidadeService = cidadeService;
+    }
 
     public Cliente validaClienteOuErro(Long clienteId) {
         return clienteRepository.findById(clienteId)

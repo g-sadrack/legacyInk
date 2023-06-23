@@ -16,13 +16,16 @@ import java.util.List;
 @Service
 public class EstoqueService {
 
-    @Autowired
-    private EstoqueRepository estoqueRepository;
-
-    @Autowired
-    private EstudioService estudioService;
-
     public static final String MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE = "O item de ID %d , não consta no estoque";
+
+    private final EstoqueRepository estoqueRepository;
+    private final EstudioService estudioService;
+
+    @Autowired
+    public EstoqueService(EstoqueRepository estoqueRepository, EstudioService estudioService) {
+        this.estoqueRepository = estoqueRepository;
+        this.estudioService = estudioService;
+    }
 
     @Transactional
     public Item salvaItem(Long itemId) {
@@ -31,7 +34,7 @@ public class EstoqueService {
     }
 
     @Transactional
-    public void deletar (Long estudioId, Long estoqueId) {
+    public void deletar(Long estudioId, Long estoqueId) {
         try {
             Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
             Item item = validaProduto(estoqueId);
