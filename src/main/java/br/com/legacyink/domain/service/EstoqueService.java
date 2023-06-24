@@ -20,7 +20,10 @@ public class EstoqueService {
 
     private final EstoqueRepository estoqueRepository;
     private final EstudioService estudioService;
-
+    public Item validaProduto(Long itemId) {
+        return estoqueRepository.findById(itemId).orElseThrow(
+                () -> new ItemNaoEncontradoException(itemId));
+    }
     @Autowired
     public EstoqueService(EstoqueRepository estoqueRepository, EstudioService estudioService) {
         this.estoqueRepository = estoqueRepository;
@@ -68,10 +71,6 @@ public class EstoqueService {
     public List<Item> listar(Long estudioId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         return estudio.getEstoque();
-    }
-
-    public Item validaProduto(Long itemId) {
-        return estoqueRepository.findById(itemId).orElseThrow(() -> new ItemNaoEncontradoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, itemId)));
     }
 
 }

@@ -22,7 +22,7 @@ public class EstudioService {
 
     public Estudio buscaEstudioOuErro(Long id) {
         return estudioRepository.findById(id).orElseThrow(
-                () -> new EstudioNaoEncontradoException(String.format("Estudio não encontrado: %d", id)));
+                () -> new EstudioNaoEncontradoException(id));
     }
 
     public List<Estudio> listarEstudios() {
@@ -40,7 +40,7 @@ public class EstudioService {
                 .orElseThrow(() -> new EstudioNaoEncontradoException(id));
 
         if (!estudio.getEstoque().isEmpty()) {
-            throw new EntidadeEmUsoException("O Estudio possui itens no estoque");
+            throw new EntidadeEmUsoException("O Estudio possui itens em estoque associado");
         }
 
         if (!estudio.getTatuadores().isEmpty()) {
