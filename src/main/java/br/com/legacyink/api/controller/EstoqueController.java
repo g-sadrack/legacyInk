@@ -34,7 +34,7 @@ public class EstoqueController {
 
     @GetMapping("/{itemId}")
     public ItemDTO buscar(@PathVariable Long estudioId, @PathVariable Long itemId) {
-        Item item = estoqueService.buscaProduto(estudioId, itemId);
+        Item item = estoqueService.buscaProdutoEmEstoqueDoEstudio(estudioId, itemId);
         return converter.paraDTO(item);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,20 +21,43 @@ public class EstoqueService {
 
     private final EstoqueRepository estoqueRepository;
     private final EstudioService estudioService;
-    public Item validaProduto(Long itemId) {
-        return estoqueRepository.findById(itemId).orElseThrow(
-                () -> new ItemNaoEncontradoException(itemId));
-    }
+
     @Autowired
     public EstoqueService(EstoqueRepository estoqueRepository, EstudioService estudioService) {
         this.estoqueRepository = estoqueRepository;
         this.estudioService = estudioService;
     }
 
+    public Item validaProduto(Long itemId) {
+        return estoqueRepository.findById(itemId).orElseThrow(
+                () -> new ItemNaoEncontradoException(itemId));
+    }
+
+    public Item buscaProdutoEmEstoqueDoEstudio(Long estudioId, Long itemId) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        return estudio.getEstoque().stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new ItemNaoEncontradoException(itemId));
+    }
+
+    public List<Item> listar(Long estudioId) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        return new ArrayList<>(estudio.getEstoque());
+    }
+
     @Transactional
     public Item salvaItem(Long itemId) {
         Item item = this.validaProduto(itemId);
         return estoqueRepository.save(item);
+    }
+
+    @Transactional
+    public Item associaItemAoEstoqueEstudio(Long estudioId, Item item) {
+        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+        estoqueRepository.save(item);
+        estudio.adicionarItem(item);
+        return item;
     }
 
     @Transactional
@@ -49,28 +73,4 @@ public class EstoqueService {
             throw new EntidadeEmUsoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, estoqueId));
         }
     }
-
-    public Item buscaProduto(Long estudioId, Long itemId) {
-        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-        for (Item item : estudio.getEstoque()) {
-            if (item.getId().equals(itemId)) {
-                return item;
-            }
-        }
-        throw new ItemNaoEncontradoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, itemId));
-    }
-
-    @Transactional
-    public Item associaItemAoEstoqueEstudio(Long estudioId, Item item) {
-        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-        estoqueRepository.save(item);
-        estudio.adicionarItem(item);
-        return item;
-    }
-
-    public List<Item> listar(Long estudioId) {
-        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-        return estudio.getEstoque();
-    }
-
 }

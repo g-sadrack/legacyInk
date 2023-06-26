@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Item {
     @Id
     @EqualsAndHashCode.Include
