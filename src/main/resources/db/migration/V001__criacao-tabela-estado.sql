@@ -1,0 +1,6 @@
+CREATE TABLE estado (
+   id BIGINT AUTO_INCREMENT NOT NULL,
+   nome VARCHAR(50) NULL,
+   UNIQUE(nome),
+   CONSTRAINT pk_estado PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci

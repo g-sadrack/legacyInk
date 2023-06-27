@@ -1,0 +1,1 @@
+ALTER TABLE tatuador_especialidades ADD CONSTRAINT fk_tatuador_especialidades_on_tatuador FOREIGN KEY (tatuador_id) REFERENCES tatuador (id);
