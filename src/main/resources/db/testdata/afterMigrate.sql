@@ -35,14 +35,14 @@ INSERT INTO estado (nome) VALUES ('Rio de Janeiro');
 INSERT INTO estado (nome) VALUES('Minas Gerais');
 
 -- cidade
-INSERT INTO cidade (nome, estado_id) VALUES ('São Paulo', 1);
-INSERT INTO cidade (nome, estado_id) VALUES ('Rio de Janeiro', 2);
+INSERT INTO cidade (nome, estado_id) VALUES ('Guarulhos', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Duque de Caixias', 2);
 INSERT INTO cidade (nome, estado_id) VALUES ('Belo Horizonte', 3);
 
 -- tatuador
-INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao) VALUES ('Jonas', 2, 4.5);
-INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao) VALUES ('Gabriel', 4, 4.9);
-INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao) VALUES ('Maria', 6, 4.1);
+INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao) VALUES ('Gabril', 2, 4.5);
+INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao) VALUES ('Luanna', 1, 4.9);
+INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao) VALUES ('Monyelle', 3, 4.1);
 
 -- tatuador especialidades
 INSERT INTO tatuador_especialidades (tatuador_id, especialidade) VALUES (1, 'TRIBAL');
@@ -63,9 +63,9 @@ insert into `cliente` (`data_nascimento`, `email`, `endereco_cep`, `endereco_cid
 insert into `cliente` (`data_nascimento`, `email`, `endereco_cep`, `endereco_cidade_id`, `endereco_complemento`, `endereco_logradouro`, `endereco_numero`, `endereco_rua`,`idade`, `nome`, `sexo`, `telefone`) values ('1977-01-25', 'duda@gmail.com', '12745678', '1', 'Lt 24', 'Rua Marechal Deodoro', '20', 'Norte', 20, 'Eduardo Silva', 'MASCULINO', '(11) 9999-7787');
 
 -- agendamento
-INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id) VALUES (NOW(), NOW(), 'AGENDADO', 1, 2);
-INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id) VALUES (NOW(), NOW(), 'AGENDADO', 2, 3);
-INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id) VALUES (NOW(), NOW(), 'CONCLUIDO', 3, 1);
+INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES (NOW(), NOW(), 'AGENDADO', 1, 2, '2023-06-19 13:00:00');
+INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES (NOW(), NOW(), 'AGENDADO', 2, 3, '2023-06-19 14:30:00');
+INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES (NOW(), NOW(), 'CONCLUIDO', 3, 1, '2023-06-19 16:30:00');
 
 -- agendamento_tatuadores
 INSERT INTO agendamento_tatuadores (agendamento_id, tatuador_id) VALUES (1, 1);
@@ -91,6 +91,7 @@ insert into `estudio_tatuadores` (`estudio_id`, `tatuador_id`) values ('1', '3')
 -- item
 insert into`item` (`data_atualizacao`, `data_cadastro`, `descricao`, `nome`, `quantidade`) values ('2023-04-25 00:00:00','2023-04-25 00:00:00','tinta parapreta para tatuagem','tinta','5');
 insert into`item` (`data_atualizacao`, `data_cadastro`, `descricao`, `nome`, `quantidade`) values ('2023-04-25 00:00:00','2023-04-25 00:00:00','agulha preta para tatuagem','agulha','10');
+insert into`item` (`data_atualizacao`, `data_cadastro`, `descricao`, `nome`, `quantidade`) values ('2023-04-25 00:00:00','2023-04-25 00:00:00','papel toalha para limpar','papel toalha','10');
 
 -- estudio_estoque
 insert into `estudio_estoque` (`estudio_id`, `item_id`) values ('2', '1');
