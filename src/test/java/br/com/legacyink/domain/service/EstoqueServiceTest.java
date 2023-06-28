@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -157,7 +156,7 @@ class EstoqueServiceTest {
         Estado estado = new Estado(1L, "São Paulo");
         Cidade cidade = new Cidade(1L, "São Paulo", estado);
         Endereco endereco = new Endereco("01234-567", "Rua Principal", "123", "Apto 1", "Centro", cidade);
-        estudio = new Estudio(1L, "Meu Estúdio", "123456789", "estudio@exemplo.com", "12.345.678/0001-90", "Razão Social", "instagram.com/estudio", LocalDate.now(), endereco);
+        estudio = new Estudio(1L, "Meu Estúdio", "123456789", "estudio@exemplo.com", "12.345.678/0001-90", "Razão Social", "instagram.com/estudio", endereco);
 
         estudio.adicionarItem(item);
         estudio.adicionarItem(item2);

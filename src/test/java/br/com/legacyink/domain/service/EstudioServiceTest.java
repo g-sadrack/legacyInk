@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -170,6 +169,6 @@ class EstudioServiceTest {
         Estado estado = new Estado(1L, "São Paulo");
         Cidade cidade = new Cidade(1L, "São Paulo", estado);
         Endereco endereco = new Endereco("01234-567", "Rua Principal", "123", "Apto 1", "Centro", cidade);
-        estudio = new Estudio(ESTUDIO_ID, NOME_DO_ESTUDIO, TELEFONE, EMAIL, CNPJ, RAZAO_SOCIAL, REDES_SOCIAIS, LocalDate.now(), endereco);
+        estudio = new Estudio(ESTUDIO_ID, NOME_DO_ESTUDIO, TELEFONE, EMAIL, CNPJ, RAZAO_SOCIAL, REDES_SOCIAIS, endereco);
     }
 }
