@@ -11,7 +11,7 @@ public class AgendamentoNaoEncontradoException extends NegocioException {
         super(mensagem);
     }
 
-    public AgendamentoNaoEncontradoException(String mensagem, Throwable causa) {
-        super(mensagem, causa);
+    public AgendamentoNaoEncontradoException(Long agendamentoId) {
+        super(String.format("O Agendamento de id: %d não conta no sistema", agendamentoId));
     }
 }
