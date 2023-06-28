@@ -34,7 +34,7 @@ public class TatuadorService {
 
     public Tatuador buscaTatuadorNoEstudio(Long estudioId, Long tatuadorId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-        tatuadorRepository.findById(tatuadorId);
+
         return estudio.getTatuadores().stream()
                 .filter(tatuador -> tatuador.getId().equals(tatuadorId))
                 .findFirst()
@@ -54,8 +54,7 @@ public class TatuadorService {
     public Tatuador cadastra(Long estudioId, Tatuador tatuador) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         estudio.associarTatuador(tatuador);
-        Tatuador tatuadorSalvo = tatuadorRepository.save(tatuador);
-        return tatuadorSalvo;
+        return tatuadorRepository.save(tatuador);
     }
 
     @Transactional

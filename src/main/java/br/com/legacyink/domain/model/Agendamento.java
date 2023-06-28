@@ -12,8 +12,8 @@ import java.time.OffsetDateTime;
 @Entity
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Agendamento {
     @Id
     @EqualsAndHashCode.Include
@@ -25,11 +25,9 @@ public class Agendamento {
     @ManyToOne
     @JoinColumn(name = "tatuagem_id")
     private Tatuagem tatuagem;
-    @ManyToOne
-    @JoinColumn(name = "tatuador_id")
-    private Tatuador tatuador;
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status;
+    @Column(name = "sessao")
     private LocalDateTime dataHora;
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
