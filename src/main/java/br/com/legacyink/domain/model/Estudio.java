@@ -3,7 +3,6 @@ package br.com.legacyink.domain.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,6 @@ public class Estudio {
     private String cnpj;
     private String razaoSocial;
     private String redesSociais;
-    private LocalDate horario;
 
     @OneToMany
     @JoinTable(name = "estudio_estoque",
@@ -49,7 +47,7 @@ public class Estudio {
     private Endereco endereco;
 
     public Estudio(Long id, String nome, String telefone, String email, String cnpj, String razaoSocial,
-                   String redesSociais, LocalDate horario, Endereco endereco) {
+                   String redesSociais, Endereco endereco) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -57,7 +55,6 @@ public class Estudio {
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
         this.redesSociais = redesSociais;
-        this.horario = horario;
         this.endereco = endereco;
     }
 
