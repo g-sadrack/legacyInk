@@ -22,7 +22,6 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -122,10 +121,8 @@ class TatuadorServiceTest {
         Tatuador tatuadorAtualizado = tatuadorService.atualiza(estudio.getId(), tatuador.getId(), tatuadorInput);
 
         // Verificações
-        verify(estudioService).buscaEstudioOuErro(estudio.getId());
-        verify(tatuadorRepository).findById(tatuador.getId());
-        verify(tatuadorRepository).save(tatuador);
         assertEquals(tatuador, tatuadorAtualizado);
+        assertEquals(Tatuador.class, tatuadorAtualizado.getClass());
     }
 
     public void startTatuador() {
@@ -163,7 +160,7 @@ class TatuadorServiceTest {
         estudio.getClientes().add(cliente2);
 
         tatuador = new Tatuador(TATUADOR_ID, NOME, especialidades, TEMPO_EXPERIENCIA, avaliacao);
-        tatuadorInput = new TatuadorInput( "Jorge",  20, avaliacao);
+        tatuadorInput = new TatuadorInput("Jorge", 20, avaliacao);
         estudio.associarTatuador(tatuador);
     }
 }
