@@ -1,5 +1,7 @@
 package br.com.legacyink.domain.service;
 
+import br.com.legacyink.api.domainconverter.CidadeConvertido;
+import br.com.legacyink.api.dto.input.CidadeInput;
 import br.com.legacyink.domain.exception.CidadeNaoEncontradaException;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.repository.CidadeRepository;
@@ -17,11 +19,13 @@ public class CidadeService {
 
     private final CidadeRepository cidadeRepository;
     private final EstadoService estadoService;
+    private final CidadeConvertido convertido;
 
     @Autowired
-    public CidadeService(CidadeRepository cidadeRepository, EstadoService estadoService) {
+    public CidadeService(CidadeRepository cidadeRepository, EstadoService estadoService, CidadeConvertido convertido) {
         this.cidadeRepository = cidadeRepository;
         this.estadoService = estadoService;
+        this.convertido = convertido;
     }
 
     public Cidade validaCidadeOuErro(Long cidadeId) {
@@ -35,9 +39,18 @@ public class CidadeService {
     }
 
     @Transactional
-    public Cidade cadastrar(Cidade cidade) {
+    public Cidade cadastrar(CidadeInput cidadeInput) {
+        Cidade cidade = convertido.paraModelo(cidadeInput);
         Long estadoId = cidade.getEstado().getId();
+
         estadoService.validaEstadoOuErro(estadoId);
+        return cidadeRepository.save(cidade);
+    }
+
+    @Transactional
+    public Cidade alterar(Long cidadeId, CidadeInput cidadeInput) {
+        Cidade cidade = validaCidadeOuErro(cidadeId);
+        convertido.copiaDTOparaModeloDominio(cidadeInput, cidade);
         return cidadeRepository.save(cidade);
     }
 
