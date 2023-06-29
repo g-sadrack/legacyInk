@@ -2,9 +2,9 @@ package br.com.legacyink.api.controller;
 
 import br.com.legacyink.api.domainconverter.EstadoConvertido;
 import br.com.legacyink.api.dto.EstadoDTO;
-import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.api.dto.input.EstadoInput;
 import br.com.legacyink.api.dtoconverter.EstadoDTOConverter;
+import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +17,16 @@ import java.util.List;
 @RequestMapping("/estados")
 public class EstadoController {
 
+    private final EstadoService estadoService;
+    private final EstadoDTOConverter converter;
+    private final EstadoConvertido convertido;
+
     @Autowired
-    private EstadoService estadoService;
-    @Autowired
-    private EstadoDTOConverter converter;
-    @Autowired
-    private EstadoConvertido convertido;
+    public EstadoController(EstadoService estadoService, EstadoDTOConverter converter, EstadoConvertido convertido) {
+        this.estadoService = estadoService;
+        this.converter = converter;
+        this.convertido = convertido;
+    }
 
 
     @GetMapping
@@ -32,7 +36,7 @@ public class EstadoController {
     }
 
     @GetMapping("/{estadoId}")
-    public EstadoDTO busca(@PathVariable Long estadoId) {
+    public EstadoDTO buscar(@PathVariable Long estadoId) {
         Estado estado = estadoService.validaEstadoOuErro(estadoId);
         return converter.paraDTO(estado);
     }

@@ -21,9 +21,7 @@ public class EstadoService {
     }
 
     public Estado validaEstadoOuErro(Long estadoId) {
-        return estadoRepository.findById(estadoId)
-                .orElseThrow(() -> new EstadoNaoEncontradoException(
-                        String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId)));
+        return estadoRepository.findById(estadoId).orElseThrow(() -> new EstadoNaoEncontradoException(String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId)));
     }
 
     public List<Estado> listar() {
@@ -41,7 +39,8 @@ public class EstadoService {
             estadoRepository.deleteById(estadoId);
             estadoRepository.flush();
         } catch (EmptyResultDataAccessException e) {
-            throw new EstadoNaoEncontradoException(String.format(MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId));
+            throw new EstadoNaoEncontradoException(String.format(
+                    MSG_ESTADO_ID_NAO_CONSTA_NO_SISTEMA, estadoId));
         }
     }
 }

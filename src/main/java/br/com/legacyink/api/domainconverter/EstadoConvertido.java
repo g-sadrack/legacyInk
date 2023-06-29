@@ -1,7 +1,7 @@
 package br.com.legacyink.api.domainconverter;
 
-import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.api.dto.input.EstadoInput;
+import br.com.legacyink.domain.model.Estado;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
