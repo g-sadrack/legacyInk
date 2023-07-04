@@ -31,7 +31,6 @@ class EstadoServiceTest {
     private EstadoService estadoService;
 
     private Estado estado;
-    private Optional<Estado> optionalEstado;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +41,7 @@ class EstadoServiceTest {
 
     @Test
     void quandoValidarEstadoRetorneUmEstado() {
-        when(estadoRepository.findById(any())).thenReturn(optionalEstado);
+        when(estadoRepository.findById(any())).thenReturn(Optional.ofNullable(estado));
 
         Estado response = estadoService.validaEstadoOuErro(ID);
 
@@ -113,6 +112,5 @@ class EstadoServiceTest {
 
     public void startEstado() {
         estado = new Estado(ID, NOME);
-        optionalEstado = Optional.of(new Estado(ID, NOME));
     }
 }

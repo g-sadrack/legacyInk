@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Estado {
