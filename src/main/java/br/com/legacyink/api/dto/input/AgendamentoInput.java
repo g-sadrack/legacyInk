@@ -3,6 +3,7 @@ package br.com.legacyink.api.dto.input;
 import br.com.legacyink.api.dto.ClienteDTO;
 import br.com.legacyink.api.dto.TatuagemDTO;
 import br.com.legacyink.domain.model.enums.StatusAgendamento;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class AgendamentoInput {
 
     @NotNull

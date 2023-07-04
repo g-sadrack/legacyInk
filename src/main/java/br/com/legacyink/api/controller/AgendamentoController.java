@@ -15,36 +15,44 @@ import java.util.List;
 @RequestMapping("estudios/{estudioId}/tatuador/{tatuadorId}/agendamentos")
 public class AgendamentoController {
 
+    private final AgendamentoService agendamentoService;
+    private final AgendamentoDTOConverter converter;
+
     @Autowired
-    private AgendamentoService agendamentoService;
-    @Autowired
-    private AgendamentoDTOConverter converter;
+    public AgendamentoController(AgendamentoService agendamentoService, AgendamentoDTOConverter converter) {
+        this.agendamentoService = agendamentoService;
+        this.converter = converter;
+    }
 
     @GetMapping
-    public List<AgendamentoDTO> listar(@PathVariable Long estudioId, @PathVariable Long tatuadorId) {
+    public List<AgendamentoDTO> listarAgendamentos(@PathVariable Long estudioId, @PathVariable Long tatuadorId) {
         List<Agendamento> listar = agendamentoService.listar(estudioId, tatuadorId);
         return converter.paraDTOLista(listar);
     }
 
     @GetMapping("/{agendamentoId}")
     public AgendamentoDTO buscar(@PathVariable Long agendamentoId) {
-        var agendamento = agendamentoService.validaEnderecoOuErro(agendamentoId);
+        Agendamento agendamento = agendamentoService.validaAgendamentoOuErro(agendamentoId);
         return converter.paraDTO(agendamento);
     }
 
     @PostMapping
-    public AgendamentoDTO agendar(@PathVariable Long estudioId, @PathVariable Long tatuadorId, @Validated @RequestBody AgendamentoInput agendamentoInput) {
+    public AgendamentoDTO agendar(@PathVariable Long estudioId,
+                                  @PathVariable Long tatuadorId, @Validated @RequestBody AgendamentoInput agendamentoInput) {
         Agendamento agendamento = agendamentoService.agendar(estudioId, tatuadorId, agendamentoInput);
         return converter.paraDTO(agendamento);
     }
 
     @PutMapping
-    public AgendamentoDTO alterar(@PathVariable Long estudioId, @PathVariable Long tatuadorId, @Validated @RequestBody AgendamentoInput agendamentoInput) {
-        return converter.paraDTO(agendamentoService.alterar(estudioId, tatuadorId, agendamentoInput));
+    public AgendamentoDTO alterar(@PathVariable Long estudioId, @PathVariable Long tatuadorId,
+                                  @PathVariable Long agendamentoId, @Validated @RequestBody AgendamentoInput agendamentoInput) {
+        Agendamento agendamento = agendamentoService.alterarAgendamento(estudioId, tatuadorId, agendamentoId, agendamentoInput);
+        return converter.paraDTO(agendamento);
     }
 
     @DeleteMapping("/{agendamentoId}")
-    public void desagendar(@PathVariable Long estudioId, @PathVariable Long tatuadorId, @PathVariable Long agendamentoId) {
+    public void desagendar(@PathVariable Long estudioId,
+                           @PathVariable Long tatuadorId, @PathVariable Long agendamentoId) {
         agendamentoService.desagendar(estudioId, tatuadorId, agendamentoId);
     }
 
