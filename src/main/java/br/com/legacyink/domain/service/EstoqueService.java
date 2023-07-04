@@ -1,12 +1,12 @@
 package br.com.legacyink.domain.service;
 
-import br.com.legacyink.domain.exception.EntidadeEmUsoException;
+import br.com.legacyink.api.domainconverter.ItemConvertido;
+import br.com.legacyink.api.dto.input.ItemInput;
 import br.com.legacyink.domain.exception.ItemNaoEncontradoException;
 import br.com.legacyink.domain.model.Estudio;
 import br.com.legacyink.domain.model.Item;
 import br.com.legacyink.domain.repository.EstoqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +21,13 @@ public class EstoqueService {
 
     private final EstoqueRepository estoqueRepository;
     private final EstudioService estudioService;
+    private final ItemConvertido convertido;
 
     @Autowired
-    public EstoqueService(EstoqueRepository estoqueRepository, EstudioService estudioService) {
+    public EstoqueService(EstoqueRepository estoqueRepository, EstudioService estudioService, ItemConvertido convertido) {
         this.estoqueRepository = estoqueRepository;
         this.estudioService = estudioService;
+        this.convertido = convertido;
     }
 
     public Item validaProduto(Long itemId) {
@@ -47,30 +49,31 @@ public class EstoqueService {
     }
 
     @Transactional
-    public Item salvaItem(Long itemId) {
+    public Item alterarItem(Long itemId, ItemInput itemInput) {
         Item item = this.validaProduto(itemId);
+
+        convertido.copiaDTOparaModeloDominio(itemInput, item);
         return estoqueRepository.save(item);
     }
 
     @Transactional
-    public Item associaItemAoEstoqueEstudio(Long estudioId, Item item) {
+    public Item associaItemAoEstoqueEstudio(Long estudioId, ItemInput itemInput) {
+        Item item = convertido.paraModelo(itemInput);
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
+
         estoqueRepository.save(item);
         estudio.adicionarItem(item);
         return item;
     }
 
     @Transactional
-    public void deletar(Long estudioId, Long estoqueId) {
+    public void removerItem(Long estudioId, Long estoqueId) {
         try {
             Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
             Item item = validaProduto(estoqueId);
             estudio.removerItem(item);
-            estoqueRepository.deleteById(estoqueId);
         } catch (EmptyResultDataAccessException e) {
             throw new ItemNaoEncontradoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, estoqueId));
-        } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format(MSG_ITEM_NAO_ENCONTRADO_EM_ESTOQUE, estoqueId));
         }
     }
 }
