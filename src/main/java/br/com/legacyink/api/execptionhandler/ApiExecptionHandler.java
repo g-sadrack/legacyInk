@@ -1,9 +1,9 @@
 package br.com.legacyink.api.execptionhandler;
 
+import br.com.legacyink.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
-import br.com.legacyink.domain.exception.NegocioException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
