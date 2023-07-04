@@ -1,11 +1,9 @@
 package br.com.legacyink.api.controller;
 
-import br.com.legacyink.api.domainconverter.ClienteConvertido;
 import br.com.legacyink.api.dto.ClienteDTO;
+import br.com.legacyink.api.dto.input.ClienteInput;
 import br.com.legacyink.api.dtoconverter.ClienteDTOConverter;
 import br.com.legacyink.domain.model.Cliente;
-import br.com.legacyink.domain.repository.ClienteRepository;
-import br.com.legacyink.api.dto.input.ClienteInput;
 import br.com.legacyink.domain.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,40 +16,36 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+    private final ClienteDTOConverter converter;
 
     @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private ClienteDTOConverter converter;
-
-    @Autowired
-    private ClienteConvertido convertido;
+    public ClienteController(ClienteService clienteService, ClienteDTOConverter converter) {
+        this.clienteService = clienteService;
+        this.converter = converter;
+    }
 
     @GetMapping
-    public List<ClienteDTO> listar() {
-        return converter.paraDTOLista(clienteRepository.findAll());
+    public List<ClienteDTO> listarClientes() {
+        List<Cliente> clientes = clienteService.listar();
+        return converter.paraDTOLista(clientes);
     }
 
     @GetMapping("/{clienteId}")
-    public ClienteDTO listar(@PathVariable Long clienteId) {
+    public ClienteDTO buscarCliente(@PathVariable Long clienteId) {
         Cliente cliente = clienteService.validaClienteOuErro(clienteId);
         return converter.paraDTO(cliente);
     }
 
     @PostMapping
-    public ClienteDTO cadastrar(@Validated @RequestBody ClienteInput clienteInput) {
-        Cliente cliente = convertido.paraModelo(clienteInput);
-        clienteService.cadastrar(cliente);
+    public ClienteDTO cadastrarCliente(@Validated @RequestBody ClienteInput clienteInput) {
+        Cliente cliente = clienteService.cadastrarCliente(clienteInput);
         return converter.paraDTO(cliente);
     }
 
     @PutMapping("/{clienteId}")
-    public ClienteDTO alterar(@PathVariable Long clienteId, @Validated @RequestBody ClienteInput clienteInput) {
-        Cliente cliente = clienteService.validaClienteOuErro(clienteId);
-        convertido.copiaDTOparaModeloDominio(clienteInput, cliente);
-        Cliente clienteAtualizado = clienteService.cadastrar(cliente);
+    public ClienteDTO alterarCliente(@PathVariable Long clienteId, @Validated @RequestBody ClienteInput clienteInput) {
+        Cliente clienteAtualizado = clienteService.atualizar(clienteId, clienteInput);
         return converter.paraDTO(clienteAtualizado);
     }
 
@@ -59,4 +53,5 @@ public class ClienteController {
     public void deleta(@PathVariable Long clienteId) {
         clienteService.deletar(clienteId);
     }
+
 }

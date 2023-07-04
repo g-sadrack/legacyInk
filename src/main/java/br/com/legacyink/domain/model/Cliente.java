@@ -27,13 +27,4 @@ public class Cliente {
     @Embedded
     private Endereco endereco;
 
-    public Cliente(Long id, String nome, Integer idade, Sexo sexo, String email, String telefone, LocalDate dataNascimento) {
-        this.id = id;
-        this.nome = nome;
-        this.idade = idade;
-        this.sexo = sexo;
-        this.email = email;
-        this.telefone = telefone;
-        this.dataNascimento = dataNascimento;
-    }
 }

@@ -1,5 +1,9 @@
 package br.com.legacyink.domain.service;
 
+import br.com.legacyink.api.domainconverter.ClienteConvertido;
+import br.com.legacyink.api.dto.input.CidadeIdInput;
+import br.com.legacyink.api.dto.input.ClienteInput;
+import br.com.legacyink.api.dto.input.EnderecoInput;
 import br.com.legacyink.domain.exception.ClienteNaoEncontradoException;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Cliente;
@@ -32,34 +36,36 @@ class ClienteServiceTest {
     public static final String EMAIL = "gabriel@gmail.com";
     public static final String TELEFONE = "996812321";
     public static final LocalDate ANIVERSARIO = LocalDate.of(1998, 11, 20);
-    public static final String MSG_NAO_CONSTA_NO_SISTEMA = "O cliente de ID %d , não consta no sistema";
+    public static final String MSG_NAO_CONSTA_NO_SISTEMA = String.format("O cliente de ID %d , não consta no sistema", 135L);
     public static final int INDEX = 0;
     public static final long ESTADOID = 1L;
     public static final long CIDADEID = 1L;
 
     private Cidade cidade;
-    private Estado estado;
     private Endereco endereco;
     private Cliente cliente;
-    private Optional<Cliente> optionalCliente;
+    private ClienteInput clienteInput;
+
 
     @Mock
     private CidadeService cidadeService;
     @Mock
     private ClienteRepository clienteRepository;
-
+    @Mock
+    private ClienteConvertido convertido;
+    @Mock
     private ClienteService clienteService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        clienteService = new ClienteService(clienteRepository, cidadeService);
+        clienteService = new ClienteService(clienteRepository, cidadeService, convertido);
         startClient();
     }
 
     @Test
     void quandoBuscarPorIdEntaoRetorneUmCliente() {
-        when(clienteRepository.findById(anyLong())).thenReturn(optionalCliente);
+        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(cliente));
 
         Cliente cliente = clienteService.validaClienteOuErro(ID);
 
@@ -75,6 +81,16 @@ class ClienteServiceTest {
         assertEquals(TELEFONE, cliente.getTelefone());
         assertEquals(ANIVERSARIO, cliente.getDataNascimento());
         assertEquals(endereco, cliente.getEndereco());
+    }
+
+    @Test
+    void quandoNaoValidarClienteEntaoRetorneUmErro() {
+        when(clienteRepository.findById(135L)).thenReturn(Optional.empty());
+
+        ClienteNaoEncontradoException exception = assertThrows(
+                ClienteNaoEncontradoException.class, () -> clienteService.validaClienteOuErro(135L));
+
+        assertEquals(String.format("Não existe um cadastro de usuario com o código de id: %d", 135L), exception.getMessage());
     }
 
     @Test
@@ -111,11 +127,27 @@ class ClienteServiceTest {
     }
 
     @Test
-    void quandoCadastrarEntaoRetorneSucesso() {
+    void quandoCadastrarEntaoRetorneCliente() {
+        when(convertido.paraModelo(clienteInput)).thenReturn(cliente);
         when(cidadeService.validaCidadeOuErro(CIDADEID)).thenReturn(cidade);
         when(clienteRepository.save(cliente)).thenReturn(cliente);
 
-        Cliente response = clienteService.cadastrar(cliente);
+        Cliente response = clienteService.cadastrarCliente(clienteInput);
+
+        verify(cidadeService).validaCidadeOuErro(CIDADEID);
+        verify(clienteRepository).save(cliente);
+
+        assertEquals(cliente, response);
+    }
+
+    @Test
+    void quandoAtualizarEntaoRetorneClienteAtualizado() {
+        when(clienteRepository.findById(cliente.getId())).thenReturn(Optional.ofNullable(cliente));
+
+        when(cidadeService.validaCidadeOuErro(cliente.getEndereco().getCidade().getId())).thenReturn(cidade);
+        when(clienteRepository.save(cliente)).thenReturn(cliente);
+
+        Cliente response = clienteService.atualizar(cliente.getId(), clienteInput);
 
         verify(cidadeService).validaCidadeOuErro(CIDADEID);
         verify(clienteRepository).save(cliente);
@@ -142,11 +174,12 @@ class ClienteServiceTest {
     }
 
     private void startClient() {
-        estado = new Estado(ESTADOID, "Rio de Janeiro");
+        Estado estado = new Estado(ESTADOID, "Rio de Janeiro");
         cidade = new Cidade(CIDADEID, "Pao de acucar", estado);
         endereco = new Endereco("72863230", "Rua das Flores", "03", "aaa", "asas", cidade);
+        EnderecoInput enderecoInput = new EnderecoInput("72863230", "Rua das Flores", "03", "aaa", "asas", new CidadeIdInput());
 
         cliente = new Cliente(ID, NOME, IDADE, SEXO, EMAIL, TELEFONE, ANIVERSARIO, endereco);
-        optionalCliente = Optional.of(new Cliente(ID, NOME, IDADE, SEXO, EMAIL, TELEFONE, ANIVERSARIO, endereco));
+        clienteInput = new ClienteInput(NOME, IDADE, SEXO, EMAIL, TELEFONE, ANIVERSARIO, enderecoInput);
     }
 }
