@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -42,16 +41,14 @@ public class TatuadorService {
                         String.format(MSG_TATUADOR_NAO_CONSTA_NO_SISTEMA, tatuadorId)));
     }
 
-    public List<Tatuador> listarTatuadores(Long estudioId) {
+    public List<Tatuador> listarTodosTatuadoresDoEstudio(Long estudioId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-        if (estudio.getId() != null) {
-            return estudio.getTatuadores();
-        }
-        return Collections.emptyList();
+        return estudio.getTatuadores();
     }
 
     @Transactional
-    public Tatuador cadastra(Long estudioId, Tatuador tatuador) {
+    public Tatuador cadastra(Long estudioId, TatuadorInput tatuadorInput) {
+        Tatuador tatuador = convertido.paraModelo(tatuadorInput);
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         estudio.associarTatuador(tatuador);
         return tatuadorRepository.save(tatuador);

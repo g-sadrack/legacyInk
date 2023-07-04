@@ -30,7 +30,6 @@ class TatuadorServiceTest {
     public static final long TATUADOR_ID = 1L;
     public static final String MSG_ESTUDIO_NAO_ENCONTRADO = String.format("Estudio não encontrado: %d", TATUADOR_ID);
     public static final String NOME = "João";
-    public static final int TEMPO_EXPERIENCIA = 10;
     private Tatuador tatuador;
     private TatuadorInput tatuadorInput;
     private Estudio estudio;
@@ -56,21 +55,24 @@ class TatuadorServiceTest {
     void quandoBuscarTatuadorNoEstudioEntaoRetornaTatuador() {
         when(estudioService.buscaEstudioOuErro(anyLong())).thenReturn(estudio);
 
-        Tatuador tatuador = tatuadorService.buscaTatuadorNoEstudio(estudio.getId(), TATUADOR_ID);
+        Tatuador response = tatuadorService.buscaTatuadorNoEstudio(estudio.getId(), TATUADOR_ID);
 
         assertNotNull(tatuador);
-        assertEquals(Tatuador.class, tatuador.getClass());
-        assertEquals(TATUADOR_ID, tatuador.getId());
+        assertEquals(TATUADOR_ID, response.getId());
+        assertEquals(NOME, response.getNome());
+        assertEquals(especialidades, response.getEspecialidades());
+        assertEquals(tatuador.getTempoExperiencia(), response.getTempoExperiencia());
+        assertEquals(avaliacao, response.getAvaliacao());
     }
 
     @Test
     void quandoBuscaTatuadorInexistenteEmEstudioEntaoRetornaExcecao() {
         when(estudioService.buscaEstudioOuErro(anyLong())).thenReturn(estudio);
 
-        TatuadorNaoEncontradoException ex = assertThrows(TatuadorNaoEncontradoException.class,
+        TatuadorNaoEncontradoException exception = assertThrows(TatuadorNaoEncontradoException.class,
                 () -> tatuadorService.buscaTatuadorNoEstudio(estudio.getId(), 3L));
 
-        assertEquals(String.format("O Tatuador de ID %d não consta no sistema ou não faz parte desse estudio", 3L), ex.getMessage());
+        assertEquals(String.format("O Tatuador de ID %d não consta no sistema ou não faz parte desse estudio", 3L), exception.getMessage());
     }
 
     @Test
@@ -86,31 +88,31 @@ class TatuadorServiceTest {
     @Test
     void quadoListarTatuadoresDoEstudioEntaoRetornaListaDeTatuadores() {
         when(estudioService.buscaEstudioOuErro(anyLong())).thenReturn(estudio);
-        List<Tatuador> tatuadores = tatuadorService.listarTatuadores(estudio.getId());
+        List<Tatuador> response = tatuadorService.listarTodosTatuadoresDoEstudio(estudio.getId());
 
-        assertNotNull(tatuadores);
-        assertEquals(TATUADOR_ID, tatuadores.get(0).getId());
-        assertEquals(NOME, tatuadores.get(0).getNome());
-        assertEquals(especialidades, tatuadores.get(0).getEspecialidades());
-        assertEquals(TEMPO_EXPERIENCIA, tatuadores.get(0).getTempoExperiencia());
-        assertEquals(avaliacao, tatuadores.get(0).getAvaliacao());
+        assertNotNull(response);
+        assertEquals(TATUADOR_ID, response.get(0).getId());
+        assertEquals(NOME, response.get(0).getNome());
+        assertEquals(especialidades, response.get(0).getEspecialidades());
+        assertEquals(tatuador.getTempoExperiencia(), response.get(0).getTempoExperiencia());
+        assertEquals(avaliacao, response.get(0).getAvaliacao());
     }
 
     @Test
     void quandoCadastrarTatuadorEntaoRetoneraTatuador() {
+        when(convertido.paraModelo(tatuadorInput)).thenReturn(tatuador);
         when(estudioService.buscaEstudioOuErro(estudio.getId())).thenReturn(estudio);
         when(tatuadorRepository.save(tatuador)).thenReturn(tatuador);
 
-        Tatuador tatuadorSalvo = tatuadorService.cadastra(estudio.getId(), tatuador);
+        Tatuador response = tatuadorService.cadastra(estudio.getId(), tatuadorInput);
 
-        assertNotNull(tatuadorSalvo);
-        assertEquals(Tatuador.class, tatuadorSalvo.getClass());
-        assertEquals(tatuador.getId(), tatuadorSalvo.getId());
+        assertNotNull(response);
+        assertEquals(Tatuador.class, response.getClass());
+        assertEquals(tatuador.getId(), response.getId());
     }
 
     @Test
     void quandoAtualizarTatuadorEntaoRetoneraTatuador() {
-
         when(estudioService.buscaEstudioOuErro(estudio.getId())).thenReturn(estudio);
 
         // Configuração do mock do TatuadorRepository
@@ -118,11 +120,11 @@ class TatuadorServiceTest {
         when(tatuadorRepository.save(tatuador)).thenReturn(tatuador);
 
         // Chamada do método atualiza
-        Tatuador tatuadorAtualizado = tatuadorService.atualiza(estudio.getId(), tatuador.getId(), tatuadorInput);
+        Tatuador response = tatuadorService.atualiza(estudio.getId(), tatuador.getId(), tatuadorInput);
 
         // Verificações
-        assertEquals(tatuador, tatuadorAtualizado);
-        assertEquals(Tatuador.class, tatuadorAtualizado.getClass());
+        assertEquals(tatuador, response);
+        assertEquals(Tatuador.class, response.getClass());
     }
 
     public void startTatuador() {
@@ -159,7 +161,7 @@ class TatuadorServiceTest {
         estudio.getClientes().add(cliente1);
         estudio.getClientes().add(cliente2);
 
-        tatuador = new Tatuador(TATUADOR_ID, NOME, especialidades, TEMPO_EXPERIENCIA, avaliacao);
+        tatuador = new Tatuador(TATUADOR_ID, NOME, especialidades, 2, avaliacao);
         tatuadorInput = new TatuadorInput("Jorge", 20, avaliacao);
         estudio.associarTatuador(tatuador);
     }

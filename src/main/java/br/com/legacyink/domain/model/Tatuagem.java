@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Tatuagem {
     @Id
     @EqualsAndHashCode.Include
@@ -24,6 +24,5 @@ public class Tatuagem {
     @Column(name = "imagem_url")
     private String imagem;
     private BigDecimal preco;
-
 
 }
