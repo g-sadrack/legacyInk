@@ -4,6 +4,7 @@ import br.com.legacyink.api.domainconverter.CidadeConvertido;
 import br.com.legacyink.api.dto.input.CidadeInput;
 import br.com.legacyink.api.dto.input.EstadoIdInput;
 import br.com.legacyink.domain.exception.CidadeNaoEncontradaException;
+import br.com.legacyink.domain.exception.EstadoNaoEncontradoException;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Estado;
 import br.com.legacyink.domain.repository.CidadeRepository;
@@ -30,7 +31,6 @@ class CidadeServiceTest {
     public static final int INDEX = 0;
     public static final String MSG_CIDADE_NAO_CONSTA_NO_SISTEMA = String.format("A cidade de ID %d, não consta no sistema", CIDADE_ID);
     public static final String NOME_ESTADO = "Goias";
-    public static final String MSG_ESTADO_NAO_ENCONTRADO = String.format("O estado ID %d, não consta no sistema", 2L);
 
     private CidadeService cidadeService;
 
@@ -44,8 +44,7 @@ class CidadeServiceTest {
     private Cidade cidade;
     private Estado estado;
     private CidadeInput cidadeInput;
-    private EstadoIdInput estadoIdInput;
-    private Optional<Cidade> optionalCidade;
+
 
     @BeforeEach
     void setUp() {
@@ -56,7 +55,7 @@ class CidadeServiceTest {
 
     @Test
     void quandoValidaEnderecoEntaoSucesso() {
-        when(cidadeRepository.findById(anyLong())).thenReturn(optionalCidade);
+        when(cidadeRepository.findById(anyLong())).thenReturn(Optional.ofNullable(cidade));
 
         Cidade response = cidadeService.validaCidadeOuErro(CIDADE_ID);
 
@@ -104,16 +103,37 @@ class CidadeServiceTest {
         verify(convertido, times(1)).paraModelo(cidadeInput);
     }
 
-//    @Test
-//    void quandoSalvarCidadeComEstadoInexistenteEntaoRetornaErro() {
-//        when(estadoService.validaEstadoOuErro(anyLong())).thenThrow(new EstadoNaoEncontradoException(MSG_ESTADO_NAO_ENCONTRADO));
-//
-//        EstadoNaoEncontradoException estadoNaoEncontradoException
-//                = assertThrows(EstadoNaoEncontradoException.class, () -> cidadeService.cadastrar(any()));
-//
-//        assertEquals(MSG_ESTADO_NAO_ENCONTRADO, estadoNaoEncontradoException.getMessage());
-//
-//    }
+    @Test
+    void quandoCadastrarCidadeComEstadoInexistenteEntaoRetornaErro() {
+        cidadeInput.getEstado().setId(3L);
+        when(convertido.paraModelo(cidadeInput)).thenReturn(cidade);
+        when(estadoService.validaEstadoOuErro(anyLong())).thenThrow(new EstadoNaoEncontradoException(cidade.getId()));
+
+        EstadoNaoEncontradoException estadoNaoEncontradoException
+                = assertThrows(EstadoNaoEncontradoException.class, () -> cidadeService.cadastrar(cidadeInput));
+
+        assertEquals(EstadoNaoEncontradoException.class, estadoNaoEncontradoException.getClass());
+        assertEquals(String.format("Não existe um cadastro de Estado com o código de id: %d", cidade.getId()), estadoNaoEncontradoException.getMessage());
+
+    }
+
+    @Test
+    void quandoAlterarCidadeEntaoRetornaCidadeAtualizada() {
+        when(cidadeRepository.findById(CIDADE_ID)).thenReturn(Optional.ofNullable(cidade));
+        when(cidadeRepository.save(cidade)).thenReturn(cidade);
+
+        Cidade response = cidadeService.alterar(CIDADE_ID, cidadeInput);
+
+        assertNotNull(response);
+        assertEquals(Cidade.class, response.getClass());
+        assertEquals(CIDADE_ID, response.getId());
+        assertEquals(NOME_CIDADE, response.getNome());
+        assertEquals(estado.getId(), response.getEstado().getId());
+        assertEquals(estado.getNome(), response.getEstado().getNome());
+
+        verify(cidadeRepository).save(cidade);
+    }
+
 
     @Test
     void quandoDeletarUmaCidadeEntaoSucesso() {
@@ -135,9 +155,7 @@ class CidadeServiceTest {
         estado = new Estado(ID, NOME_ESTADO);
         cidade = new Cidade(CIDADE_ID, NOME_CIDADE, estado);
 
-        optionalCidade = Optional.of(cidade);
-
-        estadoIdInput = new EstadoIdInput(1L);
+        EstadoIdInput estadoIdInput = new EstadoIdInput(1L);
         cidadeInput = new CidadeInput(NOME_CIDADE, estadoIdInput);
     }
 }

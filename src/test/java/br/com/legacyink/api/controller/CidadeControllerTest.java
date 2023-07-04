@@ -45,7 +45,7 @@ class CidadeControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         controller = new CidadeController(cidadeService, converter);
-        cidadeStart();
+        startCidade();
     }
 
     @Test
@@ -138,7 +138,7 @@ class CidadeControllerTest {
         verify(cidadeService, times(1)).deleta(CIDADE_ID);
     }
 
-    public void cidadeStart() {
+    public void startCidade() {
         estado = new Estado(ID, NOME_ESTADO);
         cidade = new Cidade(CIDADE_ID, NOME_CIDADE, estado);
 
