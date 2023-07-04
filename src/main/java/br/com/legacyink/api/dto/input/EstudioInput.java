@@ -1,15 +1,17 @@
 package br.com.legacyink.api.dto.input;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EstudioInput {
     @NotBlank
     private String nome;
@@ -23,8 +25,6 @@ public class EstudioInput {
     private String razaoSocial;
     @NotBlank
     private String redesSociais;
-    @NotNull
-    private LocalDate horario;
     @Valid
     private EnderecoInput endereco;
 

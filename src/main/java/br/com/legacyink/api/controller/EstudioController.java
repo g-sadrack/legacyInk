@@ -1,10 +1,9 @@
 package br.com.legacyink.api.controller;
 
-import br.com.legacyink.api.domainconverter.EstudioConvertido;
 import br.com.legacyink.api.dto.EstudioDTO;
+import br.com.legacyink.api.dto.input.EstudioInput;
 import br.com.legacyink.api.dtoconverter.EstudioDTOconverter;
 import br.com.legacyink.domain.model.Estudio;
-import br.com.legacyink.api.dto.input.EstudioInput;
 import br.com.legacyink.domain.service.EstudioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -16,43 +15,41 @@ import java.util.List;
 @RequestMapping("/estudios")
 public class EstudioController {
 
-    @Autowired
-    private EstudioService estudioService;
+    private final EstudioService estudioService;
+    private final EstudioDTOconverter converter;
 
     @Autowired
-    private EstudioDTOconverter converter;
-
-    @Autowired
-    private EstudioConvertido convertido;
+    public EstudioController(EstudioService estudioService, EstudioDTOconverter converter) {
+        this.estudioService = estudioService;
+        this.converter = converter;
+    }
 
     @GetMapping("/{estudioId}")
-    public EstudioDTO buscar(@PathVariable Long estudioId) {
+    public EstudioDTO buscarEstudio(@PathVariable Long estudioId) {
         Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
         return converter.paraDTO(estudio);
     }
 
     @GetMapping
-    public List<EstudioDTO> listar() {
+    public List<EstudioDTO> listarEstudios() {
         List<Estudio> estudios = estudioService.listarEstudios();
         return converter.paraDTOLista(estudios);
     }
 
     @PostMapping
-    public EstudioDTO cadastra(@Validated @RequestBody EstudioInput estudioInput) {
-        Estudio estudio = convertido.paraModelo(estudioInput);
-        return converter.paraDTO(estudioService.adicionar(estudio));
+    public EstudioDTO cadastrarEstudio(@Validated @RequestBody EstudioInput estudioInput) {
+        Estudio estudio = estudioService.cadastrarEstudio(estudioInput);
+        return converter.paraDTO(estudio);
     }
 
     @PutMapping("/{estudioId}")
-    public EstudioDTO altera(@PathVariable Long estudioId, @Validated @RequestBody EstudioInput estudioInput) {
-        Estudio estudio = estudioService.buscaEstudioOuErro(estudioId);
-        convertido.copiaDTOparaModeloDominio(estudioInput, estudio);
-        return converter.paraDTO(estudioService.adicionar(estudio));
+    public EstudioDTO alterarEstudio(@PathVariable Long estudioId, @Validated @RequestBody EstudioInput estudioInput) {
+        Estudio estudio = estudioService.alterarEstudio(estudioId, estudioInput);
+        return converter.paraDTO(estudio);
     }
 
     @DeleteMapping("/{estudioId}")
-    public void remove(@PathVariable Long estudioId) {
-        estudioService.remover(estudioId);
+    public void removerEstudio(@PathVariable Long estudioId) {
+        estudioService.removerEstudio(estudioId);
     }
-
 }

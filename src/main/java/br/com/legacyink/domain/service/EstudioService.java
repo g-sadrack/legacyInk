@@ -1,5 +1,7 @@
 package br.com.legacyink.domain.service;
 
+import br.com.legacyink.api.domainconverter.EstudioConvertido;
+import br.com.legacyink.api.dto.input.EstudioInput;
 import br.com.legacyink.domain.exception.EntidadeEmUsoException;
 import br.com.legacyink.domain.exception.EstudioNaoEncontradoException;
 import br.com.legacyink.domain.model.Estudio;
@@ -14,10 +16,12 @@ import java.util.List;
 public class EstudioService {
 
     private final EstudioRepository estudioRepository;
+    private final EstudioConvertido convertido;
 
     @Autowired
-    public EstudioService(EstudioRepository estudioRepository) {
+    public EstudioService(EstudioRepository estudioRepository, EstudioConvertido convertido) {
         this.estudioRepository = estudioRepository;
+        this.convertido = convertido;
     }
 
     public Estudio buscaEstudioOuErro(Long id) {
@@ -30,12 +34,20 @@ public class EstudioService {
     }
 
     @Transient
-    public Estudio adicionar(Estudio estudio) {
+    public Estudio cadastrarEstudio(EstudioInput estudioInput) {
+        Estudio estudio = convertido.paraModelo(estudioInput);
         return estudioRepository.save(estudio);
     }
 
     @Transient
-    public void remover(Long id) {
+    public Estudio alterarEstudio(Long estudioId, EstudioInput estudioInput) {
+        Estudio estudio = buscaEstudioOuErro(estudioId);
+        convertido.copiaDTOparaModeloDominio(estudioInput, estudio);
+        return estudioRepository.save(estudio);
+    }
+
+    @Transient
+    public void removerEstudio(Long id) {
         Estudio estudio = estudioRepository.findById(id)
                 .orElseThrow(() -> new EstudioNaoEncontradoException(id));
 
