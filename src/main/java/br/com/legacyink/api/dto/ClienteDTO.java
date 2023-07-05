@@ -1,6 +1,6 @@
 package br.com.legacyink.api.dto;
 
-import br.com.legacyink.domain.model.Endereco;
+import br.com.legacyink.api.dto.resumo.EnderecoResumoDTO;
 import br.com.legacyink.domain.model.enums.Sexo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +21,6 @@ public class ClienteDTO {
     private String email;
     private String telefone;
     private LocalDate dataNascimento;
-    private Endereco endereco;
+    private EnderecoResumoDTO endereco;
 
 }

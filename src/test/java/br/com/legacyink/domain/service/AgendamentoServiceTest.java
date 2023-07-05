@@ -4,6 +4,7 @@ import br.com.legacyink.api.domainconverter.AgendamentoConvertido;
 import br.com.legacyink.api.dto.ClienteDTO;
 import br.com.legacyink.api.dto.TatuagemDTO;
 import br.com.legacyink.api.dto.input.AgendamentoInput;
+import br.com.legacyink.api.dto.resumo.EnderecoResumoDTO;
 import br.com.legacyink.domain.exception.AgendamentoNaoEncontradoException;
 import br.com.legacyink.domain.model.*;
 import br.com.legacyink.domain.model.enums.Cor;
@@ -145,7 +146,7 @@ class AgendamentoServiceTest {
         estudio.associarTatuador(tatuador);
 
         Cliente cliente = new Cliente(1L, "Jorge", 72, Sexo.MASCULINO, "Jorge@gmail.com", "996812321", LocalDate.of(1980, 11, 20), new Endereco());
-        ClienteDTO clienteDTO = new ClienteDTO(1L, "Jorge", 72, Sexo.MASCULINO, "Jorge@gmail.com", "996812321", LocalDate.of(1980, 11, 20), new Endereco());
+        ClienteDTO clienteDTO = new ClienteDTO(1L, "Jorge", 72, Sexo.MASCULINO, "Jorge@gmail.com", "996812321", LocalDate.of(1980, 11, 20), new EnderecoResumoDTO());
 
         Tatuagem tatuagem = new Tatuagem(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));
         TatuagemDTO tatuagemDTO = new TatuagemDTO(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));

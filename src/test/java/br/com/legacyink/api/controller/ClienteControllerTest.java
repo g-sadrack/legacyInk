@@ -3,6 +3,8 @@ package br.com.legacyink.api.controller;
 import br.com.legacyink.api.dto.ClienteDTO;
 import br.com.legacyink.api.dto.input.ClienteInput;
 import br.com.legacyink.api.dto.input.EnderecoInput;
+import br.com.legacyink.api.dto.resumo.CidadeResumoDTO;
+import br.com.legacyink.api.dto.resumo.EnderecoResumoDTO;
 import br.com.legacyink.api.dtoconverter.ClienteDTOConverter;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Cliente;
@@ -36,7 +38,6 @@ class ClienteControllerTest {
     public static final long ESTADOID = 1L;
     public static final long CIDADEID = 1L;
 
-    private Endereco endereco;
     private ClienteInput clienteInput;
     private Cliente cliente;
     private ClienteDTO clienteDTO;
@@ -70,7 +71,13 @@ class ClienteControllerTest {
         assertEquals(EMAIL, response.get(INDEX).getEmail());
         assertEquals(TELEFONE, response.get(INDEX).getTelefone());
         assertEquals(DATA_DE_NASCIMENTO, response.get(INDEX).getDataNascimento());
-        assertEquals(endereco, response.get(INDEX).getEndereco());
+
+        assertEquals(clienteDTO.getEndereco().getCep(), response.get(INDEX).getEndereco().getCep());
+        assertEquals(clienteDTO.getEndereco().getRua(), response.get(INDEX).getEndereco().getRua());
+        assertEquals(clienteDTO.getEndereco().getComplemento(), response.get(INDEX).getEndereco().getComplemento());
+        assertEquals(clienteDTO.getEndereco().getLogradouro(), response.get(INDEX).getEndereco().getLogradouro());
+        assertEquals(clienteDTO.getEndereco().getCidade().getNome(), response.get(INDEX).getEndereco().getCidade().getNome());
+        assertEquals(clienteDTO.getEndereco().getCidade().getEstado(), response.get(INDEX).getEndereco().getCidade().getEstado());
 
         verify(clienteService, times(1)).listar();
         verify(converter, times(1)).paraDTOLista(anyList());
@@ -92,7 +99,14 @@ class ClienteControllerTest {
         assertEquals(EMAIL, response.getEmail());
         assertEquals(TELEFONE, response.getTelefone());
         assertEquals(DATA_DE_NASCIMENTO, response.getDataNascimento());
-        assertEquals(endereco, response.getEndereco());
+
+        assertEquals(clienteDTO.getEndereco().getCep(), response.getEndereco().getCep());
+        assertEquals(clienteDTO.getEndereco().getRua(), response.getEndereco().getRua());
+        assertEquals(clienteDTO.getEndereco().getNumero(), response.getEndereco().getNumero());
+        assertEquals(clienteDTO.getEndereco().getComplemento(), response.getEndereco().getComplemento());
+        assertEquals(clienteDTO.getEndereco().getLogradouro(), response.getEndereco().getLogradouro());
+        assertEquals(clienteDTO.getEndereco().getCidade().getNome(), response.getEndereco().getCidade().getNome());
+        assertEquals(clienteDTO.getEndereco().getCidade().getEstado(), response.getEndereco().getCidade().getEstado());
 
         verify(clienteService, times(1)).validaClienteOuErro(ID);
         verify(converter, times(1)).paraDTO(cliente);
@@ -114,7 +128,15 @@ class ClienteControllerTest {
         assertEquals(EMAIL, response.getEmail());
         assertEquals(TELEFONE, response.getTelefone());
         assertEquals(DATA_DE_NASCIMENTO, response.getDataNascimento());
-        assertEquals(endereco, response.getEndereco());
+
+        assertEquals(clienteDTO.getEndereco().getCep(), response.getEndereco().getCep());
+        assertEquals(clienteDTO.getEndereco().getRua(), response.getEndereco().getRua());
+        assertEquals(clienteDTO.getEndereco().getNumero(), response.getEndereco().getNumero());
+        assertEquals(clienteDTO.getEndereco().getComplemento(), response.getEndereco().getComplemento());
+        assertEquals(clienteDTO.getEndereco().getLogradouro(), response.getEndereco().getLogradouro());
+        assertEquals(clienteDTO.getEndereco().getCidade().getNome(), response.getEndereco().getCidade().getNome());
+        assertEquals(clienteDTO.getEndereco().getCidade().getEstado(), response.getEndereco().getCidade().getEstado());
+
 
         verify(clienteService, times(1)).cadastrarCliente(clienteInput);
         verify(converter, times(1)).paraDTO(cliente);
@@ -137,7 +159,15 @@ class ClienteControllerTest {
         assertEquals(EMAIL, response.getEmail());
         assertEquals(TELEFONE, response.getTelefone());
         assertEquals(DATA_DE_NASCIMENTO, response.getDataNascimento());
-        assertEquals(endereco, response.getEndereco());
+
+        assertEquals(clienteDTO.getEndereco().getCep(), response.getEndereco().getCep());
+        assertEquals(clienteDTO.getEndereco().getRua(), response.getEndereco().getRua());
+        assertEquals(clienteDTO.getEndereco().getNumero(), response.getEndereco().getNumero());
+        assertEquals(clienteDTO.getEndereco().getComplemento(), response.getEndereco().getComplemento());
+        assertEquals(clienteDTO.getEndereco().getLogradouro(), response.getEndereco().getLogradouro());
+        assertEquals(clienteDTO.getEndereco().getCidade().getNome(), response.getEndereco().getCidade().getNome());
+        assertEquals(clienteDTO.getEndereco().getCidade().getEstado(), response.getEndereco().getCidade().getEstado());
+
 
         verify(clienteService, times(1)).atualizar(ID, clienteInput);
         verify(converter, times(1)).paraDTO(cliente);
@@ -154,11 +184,13 @@ class ClienteControllerTest {
     private void startClient() {
         Estado estado = new Estado(ESTADOID, "Rio de Janeiro");
         Cidade cidade = new Cidade(CIDADEID, "Pao de acucar", estado);
-        endereco = new Endereco("72863230", "Rua das Flores", "03", "aaa", "asas", cidade);
+        CidadeResumoDTO cidadeResumoDTO = new CidadeResumoDTO("Pao de acucar","Rio de Janeiro" );
+        Endereco endereco = new Endereco("75619-970", "Rua das Flores", "03", "casa", "asas", cidade);
+        EnderecoResumoDTO enderecoResumoDTO = new EnderecoResumoDTO("75619-970", "Rua das Flores", "03", "casa", "asas", cidadeResumoDTO);
 
         cliente = new Cliente(ID, NOME, IDADE, SEXO, EMAIL, TELEFONE, DATA_DE_NASCIMENTO, endereco);
         clienteInput = new ClienteInput(NOME, IDADE, SEXO, EMAIL, TELEFONE, DATA_DE_NASCIMENTO, new EnderecoInput());
-        clienteDTO = new ClienteDTO(ID, NOME, IDADE, SEXO, EMAIL, TELEFONE, DATA_DE_NASCIMENTO, endereco);
+        clienteDTO = new ClienteDTO(ID, NOME, IDADE, SEXO, EMAIL, TELEFONE, DATA_DE_NASCIMENTO, enderecoResumoDTO);
     }
 
 }
