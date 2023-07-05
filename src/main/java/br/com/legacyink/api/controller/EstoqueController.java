@@ -6,6 +6,7 @@ import br.com.legacyink.api.dtoconverter.ItemDTOConverter;
 import br.com.legacyink.domain.model.Item;
 import br.com.legacyink.domain.service.EstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class EstoqueController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ItemDTO cadastrarItemAoEstoque(@PathVariable Long estudioId, @Validated @RequestBody ItemInput itemInput) {
         Item item = estoqueService.associaItemAoEstoqueEstudio(estudioId, itemInput);
         return converter.paraDTO(item);

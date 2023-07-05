@@ -6,6 +6,7 @@ import br.com.legacyink.api.dtoconverter.ClienteDTOConverter;
 import br.com.legacyink.domain.model.Cliente;
 import br.com.legacyink.domain.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class ClienteController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ClienteDTO cadastrarCliente(@Validated @RequestBody ClienteInput clienteInput) {
         Cliente cliente = clienteService.cadastrarCliente(clienteInput);
         return converter.paraDTO(cliente);

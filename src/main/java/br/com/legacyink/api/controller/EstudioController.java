@@ -6,6 +6,7 @@ import br.com.legacyink.api.dtoconverter.EstudioDTOconverter;
 import br.com.legacyink.domain.model.Estudio;
 import br.com.legacyink.domain.service.EstudioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class EstudioController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public EstudioDTO cadastrarEstudio(@Validated @RequestBody EstudioInput estudioInput) {
         Estudio estudio = estudioService.cadastrarEstudio(estudioInput);
         return converter.paraDTO(estudio);

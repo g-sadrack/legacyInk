@@ -6,6 +6,7 @@ import br.com.legacyink.api.dtoconverter.AgendamentoDTOConverter;
 import br.com.legacyink.domain.model.Agendamento;
 import br.com.legacyink.domain.service.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class AgendamentoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public AgendamentoDTO agendar(@PathVariable Long estudioId,
                                   @PathVariable Long tatuadorId, @Validated @RequestBody AgendamentoInput agendamentoInput) {
         Agendamento agendamento = agendamentoService.agendar(estudioId, tatuadorId, agendamentoInput);

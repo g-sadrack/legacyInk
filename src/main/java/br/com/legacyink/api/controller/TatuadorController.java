@@ -6,6 +6,7 @@ import br.com.legacyink.api.dtoconverter.TatuadorDTOConverter;
 import br.com.legacyink.domain.model.Tatuador;
 import br.com.legacyink.domain.service.TatuadorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class TatuadorController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public TatuadorDTO cadastrarTatuadorEmEstudio(@PathVariable Long estudioId, @Validated @RequestBody TatuadorInput tatuadorInput) {
         Tatuador tatuador = tatuadorService.cadastra(estudioId, tatuadorInput);
         return converter.paraDTO(tatuador);

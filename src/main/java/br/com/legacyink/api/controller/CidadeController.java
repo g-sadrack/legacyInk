@@ -6,6 +6,7 @@ import br.com.legacyink.api.dtoconverter.CidadeDTOConverter;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class CidadeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CidadeDTO cadastrar(@Validated @RequestBody CidadeInput cidadeInput) {
         Cidade cidade = cidadeService.cadastrar(cidadeInput);
         return converter.paraDTO(cidade);
