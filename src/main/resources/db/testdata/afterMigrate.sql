@@ -75,8 +75,8 @@ INSERT INTO agendamento_tatuadores (agendamento_id, tatuador_id) VALUES (3, 1);
 
 -- estudio
 INSERT INTO estudio (nome, telefone, email, cnpj, razao_social, redes_sociais, endereco_cidade_id, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, endereco_rua)
-VALUES ('Estúdio X', '(11) 1234-5678', 'estudiox@email.com', '12345678901234', 'Razão Social X', 'instagram.com/estudiox', 1, '01234567', 'Sala 101', 'Rua Principal', '100', 'Bairro Y'),
-('Estúdio Y', '(22) 2345-6789', 'estudioy@email.com', '23456789012345', 'Razão Social Y', NULL, 2, '12345678', NULL, 'Avenida Secundária', '500', 'Bairro Z');
+VALUES ('Estúdio X', '(11) 1234-5678', 'estudiox@email.com', '56.617.125/0001-10', 'Razão Social X', '@estudiox', 1, '71020-192', 'Sala 101', 'Rua Principal', '100', 'Bairro Y'),
+('Estúdio Y', '(22) 2345-6789', 'estudioy@email.com', '95.693.497/0001-87', 'Razão Social Y', '@estudioy', 2, '71020-892', NULL, 'Avenida Secundária', '500', 'Bairro Z');
 
 -- estudio_clientes
 insert into `estudio_clientes` (`cliente_id`, `estudio_id`) values ('1', '1');
