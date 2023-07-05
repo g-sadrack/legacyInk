@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class ClienteInput {
     @NotNull
     private Sexo sexo;
     @NotBlank
+    @Email
     private String email;
     @NotBlank
     private String telefone;
