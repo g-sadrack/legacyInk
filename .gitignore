@@ -181,7 +181,7 @@ ddl.sql
 src/main/resources/db/migration/testdata/
 
 ##IDE/MAVEN
-.idea/**/
-.mvn/wrapper
+.idea
+.mvn
 mvnw
 mvnw.cmd
