@@ -22,7 +22,6 @@ public class EnderecoInput {
     @NotBlank
     private String numero;
 
-    @NotBlank
     private String complemento;
 
     @NotBlank

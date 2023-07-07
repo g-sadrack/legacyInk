@@ -60,4 +60,14 @@ public class TatuadorService {
         convertido.copiaDTOparaModeloDominio(tatuadorInput, tatuador);
         return tatuadorRepository.save(tatuador);
     }
+    @Transactional
+    public void ativar(Long estudioId, Long tatuadorId) {
+        Tatuador tatuador = this.buscaTatuadorNoEstudio(estudioId, tatuadorId);
+        tatuador.ativar();
+    }
+    @Transactional
+    public void inativar(Long estudioId, Long tatuadorId) {
+        Tatuador tatuador = this.buscaTatuadorNoEstudio(estudioId, tatuadorId);
+        tatuador.inativar();
+    }
 }

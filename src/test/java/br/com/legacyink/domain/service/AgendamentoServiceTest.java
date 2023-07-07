@@ -140,7 +140,8 @@ class AgendamentoServiceTest {
         especialidades.add(Especialidade.BLACKWORK);
         especialidades.add(Especialidade.REALISMO);
 
-        tatuador = new Tatuador(1L, "Maria", especialidades, 1, BigDecimal.valueOf(4.5));
+        tatuador = new Tatuador(1L, "Maria", 1, BigDecimal.valueOf(4.5), true);
+        tatuador.setEspecialidades(especialidades);
 
         estudio = new Estudio(1L, "Meu Estúdio", "123456789", "estudio@exemplo.com", "12.345.678/0001-90", "Razão Social", "instagram.com/estudio", new Endereco());
         estudio.associarTatuador(tatuador);

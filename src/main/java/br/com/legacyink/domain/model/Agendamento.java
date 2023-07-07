@@ -26,7 +26,7 @@ public class Agendamento {
     @JoinColumn(name = "tatuagem_id")
     private Tatuagem tatuagem;
     @Enumerated(EnumType.STRING)
-    private StatusAgendamento status;
+    private StatusAgendamento status = StatusAgendamento.AGENDADO;
     @Column(name = "sessao")
     private LocalDateTime dataHora;
     @CreationTimestamp

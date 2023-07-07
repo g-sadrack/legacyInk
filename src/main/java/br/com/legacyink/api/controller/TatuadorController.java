@@ -51,4 +51,16 @@ public class TatuadorController {
         Tatuador tatuador = tatuadorService.atualiza(estudioId, tatuadorId, tatuadorInput);
         return converter.paraDTO(tatuador);
     }
+
+    @PutMapping("/{tatuadorId}/ativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long estudioId, @PathVariable Long tatuadorId) {
+        tatuadorService.ativar(estudioId, tatuadorId);
+    }
+
+    @DeleteMapping("/{tatuadorId}/ativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long estudioId, @PathVariable Long tatuadorId) {
+        tatuadorService.inativar(estudioId, tatuadorId);
+    }
 }

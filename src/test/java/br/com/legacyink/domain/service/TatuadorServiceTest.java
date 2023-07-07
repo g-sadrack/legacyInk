@@ -127,6 +127,12 @@ class TatuadorServiceTest {
         assertEquals(Tatuador.class, response.getClass());
     }
 
+    @Test
+    void quandoAtivarTatuadorEntaoRetoneraTatuador() {
+       // TODO Implementar teste unitario de ativacao e inativcao
+
+    }
+
     public void startTatuador() {
         especialidades = new ArrayList<>();
         especialidades.add(Especialidade.AQUARELA);
@@ -161,7 +167,8 @@ class TatuadorServiceTest {
         estudio.getClientes().add(cliente1);
         estudio.getClientes().add(cliente2);
 
-        tatuador = new Tatuador(TATUADOR_ID, NOME, especialidades, 2, avaliacao);
+        tatuador = new Tatuador(TATUADOR_ID, NOME,  2, avaliacao, true);
+        tatuador.setEspecialidades(especialidades);
         tatuadorInput = new TatuadorInput("Jorge", 20, avaliacao);
         estudio.associarTatuador(tatuador);
     }

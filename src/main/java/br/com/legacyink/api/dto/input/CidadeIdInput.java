@@ -14,6 +14,4 @@ import javax.validation.constraints.NotNull;
 public class CidadeIdInput {
     @NotNull
     private Long id;
-    @NotNull
-    private EstadoIdInput estado;
 }

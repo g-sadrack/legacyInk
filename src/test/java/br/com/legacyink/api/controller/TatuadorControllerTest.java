@@ -116,6 +116,11 @@ class TatuadorControllerTest {
         verify(converter, times(1)).paraDTO(tatuador);
     }
 
+    @Test
+    void quandoAtivarUmTatuadorEntaoRetorna() {
+        //TODO testar o endpoint de ativar e inativar
+    }
+
     private void startTatuador() {
         especialidades.add(Especialidade.AQUARELA);
         especialidades.add(Especialidade.BLACKWORK);
@@ -149,9 +154,11 @@ class TatuadorControllerTest {
         estudio.getClientes().add(cliente1);
         estudio.getClientes().add(cliente2);
 
-        tatuador = new Tatuador(TATUADOR_ID, NOME, especialidades, TEMPO_EXPERIENCIA, avaliacao);
+        tatuador = new Tatuador(TATUADOR_ID, NOME, TEMPO_EXPERIENCIA, avaliacao, true);
         tatuadorInput = new TatuadorInput("Jorge", TEMPO_EXPERIENCIA, avaliacao);
-        tatuadorDTO = new TatuadorDTO(TATUADOR_ID, NOME, TEMPO_EXPERIENCIA, avaliacao);
+        tatuadorDTO = new TatuadorDTO(TATUADOR_ID, NOME, TEMPO_EXPERIENCIA, avaliacao, true);
+
+        tatuador.setEspecialidades(especialidades);
         estudio.associarTatuador(tatuador);
     }
 }

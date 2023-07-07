@@ -16,5 +16,5 @@ public class TatuadorDTO {
     private String nome;
     private Integer tempoExperiencia;
     private BigDecimal avaliacao;
-
+    private Boolean ativo;
 }

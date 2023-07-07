@@ -44,11 +44,13 @@ class EstudioServiceTest {
     private EstudioConvertido convertido;
     @Mock
     private EstudioRepository estudioRepository;
+    @Mock
+    private CidadeService cidadeService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        estudioService = new EstudioService(estudioRepository, convertido);
+        estudioService = new EstudioService(estudioRepository, convertido, cidadeService);
         startEstudio();
     }
 

@@ -4,6 +4,7 @@ import br.com.legacyink.api.domainconverter.EstudioConvertido;
 import br.com.legacyink.api.dto.input.EstudioInput;
 import br.com.legacyink.domain.exception.EntidadeEmUsoException;
 import br.com.legacyink.domain.exception.EstudioNaoEncontradoException;
+import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Estudio;
 import br.com.legacyink.domain.repository.EstudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,14 @@ public class EstudioService {
 
     private final EstudioRepository estudioRepository;
     private final EstudioConvertido convertido;
+    private final CidadeService cidadeService;
+
 
     @Autowired
-    public EstudioService(EstudioRepository estudioRepository, EstudioConvertido convertido) {
+    public EstudioService(EstudioRepository estudioRepository, EstudioConvertido convertido, CidadeService cidadeService) {
         this.estudioRepository = estudioRepository;
         this.convertido = convertido;
+        this.cidadeService = cidadeService;
     }
 
     public Estudio buscaEstudioOuErro(Long id) {
@@ -36,6 +40,9 @@ public class EstudioService {
     @Transient
     public Estudio cadastrarEstudio(EstudioInput estudioInput) {
         Estudio estudio = convertido.paraModelo(estudioInput);
+        Cidade cidade = cidadeService.validaCidadeOuErro(estudio.getEndereco().getCidade().getId());
+
+        estudio.getEndereco().setCidade(cidade);
         return estudioRepository.save(estudio);
     }
 
@@ -43,6 +50,10 @@ public class EstudioService {
     public Estudio alterarEstudio(Long estudioId, EstudioInput estudioInput) {
         Estudio estudio = buscaEstudioOuErro(estudioId);
         convertido.copiaDTOparaModeloDominio(estudioInput, estudio);
+
+        Cidade cidade = cidadeService.validaCidadeOuErro(estudio.getEndereco().getCidade().getId());
+        estudio.getEndereco().setCidade(cidade);
+
         return estudioRepository.save(estudio);
     }
 

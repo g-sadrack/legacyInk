@@ -29,5 +29,6 @@ public class ClienteInput {
     @NotNull
     private LocalDate dataNascimento;
     @Valid
+    @NotNull
     private EnderecoInput endereco;
 }

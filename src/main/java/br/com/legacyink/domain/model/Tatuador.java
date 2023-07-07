@@ -1,7 +1,10 @@
 package br.com.legacyink.domain.model;
 
 import br.com.legacyink.domain.model.enums.Especialidade;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,26 +21,28 @@ public class Tatuador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    private Integer tempoExperiencia;
+    private BigDecimal avaliacao;
+    private Boolean ativo = Boolean.TRUE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "especialidade")
     @ElementCollection(targetClass = Especialidade.class)
     @CollectionTable(name = "tatuador_especialidades", joinColumns = @JoinColumn(name = "tatuador_id"))
     private List<Especialidade> especialidades = new ArrayList<>();
-    private Integer tempoExperiencia;
-    private BigDecimal avaliacao;
+
     @OneToMany
     @JoinTable(name = "agendamento_tatuadores",
             joinColumns = @JoinColumn(name = "tatuador_id"),
             inverseJoinColumns = @JoinColumn(name = "agendamento_id"))
     private List<Agendamento> agendamento = new ArrayList<>();
 
-    public Tatuador(Long id, String nome, List<Especialidade> especialidades, Integer tempoExperiencia, BigDecimal avaliacao) {
+    public Tatuador(Long id, String nome, Integer tempoExperiencia, BigDecimal avaliacao, Boolean ativo) {
         this.id = id;
         this.nome = nome;
-        this.especialidades = especialidades;
         this.tempoExperiencia = tempoExperiencia;
         this.avaliacao = avaliacao;
+        this.ativo = ativo;
     }
 
     public void marcarAgendamento(Agendamento agendamento) {
@@ -46,6 +51,14 @@ public class Tatuador {
 
     public void desmarcarAgendamento(Agendamento agendamento) {
         this.agendamento.remove(agendamento);
+    }
+
+    public void ativar() {
+        this.ativo = Boolean.TRUE;
+    }
+
+    public void inativar() {
+        this.ativo = Boolean.FALSE;
     }
 
 }

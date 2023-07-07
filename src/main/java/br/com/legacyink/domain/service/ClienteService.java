@@ -3,6 +3,7 @@ package br.com.legacyink.domain.service;
 import br.com.legacyink.api.domainconverter.ClienteConvertido;
 import br.com.legacyink.api.dto.input.ClienteInput;
 import br.com.legacyink.domain.exception.ClienteNaoEncontradoException;
+import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Cliente;
 import br.com.legacyink.domain.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,9 @@ public class ClienteService {
         Cliente cliente = convertido.paraModelo(clienteInput);
         Long cidadeId = cliente.getEndereco().getCidade().getId();
 
-        cidadeService.validaCidadeOuErro(cidadeId);
+        Cidade cidade = cidadeService.validaCidadeOuErro(cidadeId);
+        cliente.getEndereco().setCidade(cidade);
+
         return clienteRepository.save(cliente);
     }
 
@@ -52,7 +55,9 @@ public class ClienteService {
         convertido.copiaDTOparaModeloDominio(clienteInput, cliente);
 
         Long cidadeId = cliente.getEndereco().getCidade().getId();
-        cidadeService.validaCidadeOuErro(cidadeId);
+        Cidade cidade = cidadeService.validaCidadeOuErro(cidadeId);
+
+        cliente.getEndereco().setCidade(cidade);
 
         return clienteRepository.save(cliente);
     }
