@@ -4,6 +4,7 @@ import br.com.legacyink.api.domainconverter.AgendamentoConvertido;
 import br.com.legacyink.api.dto.input.AgendamentoInput;
 import br.com.legacyink.domain.exception.AgendamentoNaoEncontradoException;
 import br.com.legacyink.domain.model.Agendamento;
+import br.com.legacyink.domain.model.Cliente;
 import br.com.legacyink.domain.model.Tatuador;
 import br.com.legacyink.domain.model.enums.StatusAgendamento;
 import br.com.legacyink.domain.repository.AgendamentoRepository;
@@ -19,12 +20,16 @@ public class AgendamentoService {
     private final AgendamentoRepository agendamentoRepository;
     private final TatuadorService tatuadorService;
     private final AgendamentoConvertido convertido;
+    private final TatuagemService tatuagemService;
+    private final ClienteService clienteService;
 
     @Autowired
-    public AgendamentoService(AgendamentoRepository agendamentoRepository, TatuadorService tatuadorService, AgendamentoConvertido convertido) {
+    public AgendamentoService(AgendamentoRepository agendamentoRepository, TatuadorService tatuadorService, AgendamentoConvertido convertido, TatuagemService tatuagemService, ClienteService clienteService) {
         this.agendamentoRepository = agendamentoRepository;
         this.tatuadorService = tatuadorService;
         this.convertido = convertido;
+        this.tatuagemService = tatuagemService;
+        this.clienteService = clienteService;
     }
 
     public Agendamento validaAgendamentoOuErro(Long agendamentoId) {
@@ -41,8 +46,14 @@ public class AgendamentoService {
     @Transactional
     public Agendamento agendar(Long estudioId, Long tatuadorId, AgendamentoInput agendamentoInput) {
         Tatuador tatuador = tatuadorService.buscaTatuadorNoEstudio(estudioId, tatuadorId);
+        Cliente cliente = clienteService.validaClienteOuErro(agendamentoInput.getCliente().getId());
+
         Agendamento agendamento = convertido.paraModelo(agendamentoInput);
+        agendamento.setCliente(cliente);
+
+        tatuagemService.salvar(agendamento.getTatuagem());
         tatuador.marcarAgendamento(agendamento);
+
         return agendamentoRepository.save(agendamento);
     }
 

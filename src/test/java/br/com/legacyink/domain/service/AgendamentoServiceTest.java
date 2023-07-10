@@ -4,6 +4,8 @@ import br.com.legacyink.api.domainconverter.AgendamentoConvertido;
 import br.com.legacyink.api.dto.ClienteDTO;
 import br.com.legacyink.api.dto.TatuagemDTO;
 import br.com.legacyink.api.dto.input.AgendamentoInput;
+import br.com.legacyink.api.dto.input.ClienteIdInput;
+import br.com.legacyink.api.dto.input.TatuagemInput;
 import br.com.legacyink.api.dto.resumo.EnderecoResumoDTO;
 import br.com.legacyink.domain.exception.AgendamentoNaoEncontradoException;
 import br.com.legacyink.domain.model.*;
@@ -46,10 +48,15 @@ class AgendamentoServiceTest {
     private AgendamentoConvertido convertido;
     @Mock
     private AgendamentoService agendamentoService;
+    @Mock
+    private TatuagemService tatuagemService;
+    @Mock
+    private ClienteService clienteService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        agendamentoService = new AgendamentoService(agendamentoRepository, tatuadorService, convertido);
+        agendamentoService = new AgendamentoService(agendamentoRepository, tatuadorService, convertido, tatuagemService, clienteService);
         startAgendamento();
     }
 
@@ -127,8 +134,8 @@ class AgendamentoServiceTest {
 
         AgendamentoNaoEncontradoException exception = assertThrows(
                 AgendamentoNaoEncontradoException.class, () -> {
-            agendamentoService.desagendar(estudio.getId(), tatuador.getId(), AGENDAMENTO_ID);
-        });
+                    agendamentoService.desagendar(estudio.getId(), tatuador.getId(), AGENDAMENTO_ID);
+                });
 
         assertEquals(AgendamentoNaoEncontradoException.class, exception.getClass());
         assertEquals(String.format("O Agendamento de id: %d não conta no sistema", AGENDAMENTO_ID), exception.getMessage());
@@ -153,7 +160,7 @@ class AgendamentoServiceTest {
         TatuagemDTO tatuagemDTO = new TatuagemDTO(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));
 
         agendamento = new Agendamento(1L, cliente, tatuagem, StatusAgendamento.COFIRMADO, LocalDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now());
-        agendamentoInput = new AgendamentoInput(clienteDTO, tatuagemDTO, StatusAgendamento.COFIRMADO, LocalDateTime.now());
+        agendamentoInput = new AgendamentoInput(new ClienteIdInput(1L), new TatuagemInput(), StatusAgendamento.COFIRMADO, LocalDateTime.now());
 
         tatuador.marcarAgendamento(agendamento);
     }

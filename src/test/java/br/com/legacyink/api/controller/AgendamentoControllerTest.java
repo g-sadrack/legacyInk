@@ -4,6 +4,8 @@ import br.com.legacyink.api.dto.AgendamentoDTO;
 import br.com.legacyink.api.dto.ClienteDTO;
 import br.com.legacyink.api.dto.TatuagemDTO;
 import br.com.legacyink.api.dto.input.AgendamentoInput;
+import br.com.legacyink.api.dto.input.ClienteIdInput;
+import br.com.legacyink.api.dto.input.TatuagemInput;
 import br.com.legacyink.api.dto.resumo.ClienteResumo;
 import br.com.legacyink.api.dto.resumo.EnderecoResumoDTO;
 import br.com.legacyink.api.dto.resumo.TatuagemResumo;
@@ -143,7 +145,7 @@ class AgendamentoControllerTest {
                 new ClienteResumo("Jorge", "Jorge@gmail.com", "996812321"),
                 new TatuagemResumo("Tatuagem de dragão", 20, BigDecimal.valueOf(350.0),Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png"),
                 StatusAgendamento.COFIRMADO);
-        agendamentoInput = new AgendamentoInput(clienteDTO, tatuagemDTO, StatusAgendamento.COFIRMADO, LocalDateTime.now());
+        agendamentoInput = new AgendamentoInput(new ClienteIdInput(1L), new TatuagemInput("Tatuagem de dragão", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png",BigDecimal.valueOf(250)), StatusAgendamento.COFIRMADO, LocalDateTime.now());
 
         tatuador.marcarAgendamento(agendamento);
     }

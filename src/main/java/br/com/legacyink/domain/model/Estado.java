@@ -12,11 +12,15 @@ import javax.persistence.Id;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Estado {
+public class Estado implements Comparable<Estado>{
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
+    @Override
+    public int compareTo(Estado o) {
+        return id.compareTo(o.getId());
+    }
 }

@@ -4,6 +4,7 @@ import br.com.legacyink.api.domainconverter.EstudioConvertido;
 import br.com.legacyink.api.dto.input.EstudioInput;
 import br.com.legacyink.domain.exception.EntidadeEmUsoException;
 import br.com.legacyink.domain.exception.EstudioNaoEncontradoException;
+import br.com.legacyink.domain.exception.NegocioException;
 import br.com.legacyink.domain.model.Cidade;
 import br.com.legacyink.domain.model.Estudio;
 import br.com.legacyink.domain.repository.EstudioRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Transient;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstudioService {
@@ -41,6 +43,11 @@ public class EstudioService {
     public Estudio cadastrarEstudio(EstudioInput estudioInput) {
         Estudio estudio = convertido.paraModelo(estudioInput);
         Cidade cidade = cidadeService.validaCidadeOuErro(estudio.getEndereco().getCidade().getId());
+        Optional<Estudio> cnpj = estudioRepository.findByCnpj(estudio.getCnpj());
+
+        if (cnpj.isPresent()) {
+            throw new NegocioException(String.format("Estudio com cnpj %s já cadastrado", cnpj.get().getCnpj()));
+        }
 
         estudio.getEndereco().setCidade(cidade);
         return estudioRepository.save(estudio);

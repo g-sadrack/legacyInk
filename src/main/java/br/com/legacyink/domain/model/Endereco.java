@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Generated //Pesquisar mais sobre
 @Getter
 @Setter
 @Embeddable
