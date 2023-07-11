@@ -8,7 +8,8 @@ import javax.validation.Valid;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cidade {
     @Id
     @EqualsAndHashCode.Include
@@ -20,9 +21,4 @@ public class Cidade {
     @JoinColumn(nullable = false)
     private Estado estado;
 
-    public Cidade(Long id, String nome, Estado estado) {
-        this.id = id;
-        this.nome = nome;
-        this.estado = estado;
-    }
 }
