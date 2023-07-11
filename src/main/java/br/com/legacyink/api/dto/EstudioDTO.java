@@ -17,6 +17,7 @@ public class EstudioDTO {
     private String telefone;
     private String email;
     private String cnpj;
+    private Boolean aberto;
     private String razaoSocial;
     private String redesSociais;
     private Endereco endereco;

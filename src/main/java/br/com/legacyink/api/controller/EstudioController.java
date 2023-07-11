@@ -54,4 +54,15 @@ public class EstudioController {
     public void removerEstudio(@PathVariable Long estudioId) {
         estudioService.removerEstudio(estudioId);
     }
+
+    @PutMapping("/abrir/{estudioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long estudioId) {
+        estudioService.abrirEstudio(estudioId);
+    }
+
+    @PutMapping("/fechar/{estudioId}")
+    public void desativar(@PathVariable Long estudioId) {
+        estudioService.fecharEstudio(estudioId);
+    }
 }

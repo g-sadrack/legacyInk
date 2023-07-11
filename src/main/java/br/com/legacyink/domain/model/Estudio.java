@@ -21,22 +21,23 @@ public class Estudio {
     private String cnpj;
     private String razaoSocial;
     private String redesSociais;
+    private Boolean aberto = Boolean.FALSE;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estudio_estoque",
             joinColumns = @JoinColumn(name = "estudio_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     @ToString.Exclude
     private List<Item> estoque = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estudio_tatuadores",
             joinColumns = @JoinColumn(name = "estudio_id"),
             inverseJoinColumns = @JoinColumn(name = "tatuador_id"))
     @ToString.Exclude
     private List<Tatuador> tatuadores = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "estudio_clientes",
             joinColumns = @JoinColumn(name = "estudio_id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id"))
@@ -68,5 +69,13 @@ public class Estudio {
 
     public void associarTatuador(Tatuador tatuador) {
         tatuadores.add(tatuador);
+    }
+
+    public void abrir() {
+        this.aberto = true;
+    }
+
+    public void fechar() {
+        this.aberto = false;
     }
 }

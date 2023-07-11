@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Transient;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,5 +82,15 @@ public class EstudioService {
             throw new EntidadeEmUsoException("O Estudio possui clientes associados");
         }
         estudioRepository.deleteById(id);
+    }
+    @Transactional
+    public void abrirEstudio(Long estudioId) {
+        Estudio estudio = buscaEstudioOuErro(estudioId);
+        estudio.abrir();
+    }
+    @Transactional
+    public void fecharEstudio(Long estudioId) {
+        Estudio estudio = buscaEstudioOuErro(estudioId);
+        estudio.fechar();
     }
 }
