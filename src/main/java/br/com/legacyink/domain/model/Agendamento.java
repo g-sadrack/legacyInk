@@ -1,5 +1,6 @@
 package br.com.legacyink.domain.model;
 
+import br.com.legacyink.domain.exception.NegocioException;
 import br.com.legacyink.domain.model.enums.StatusAgendamento;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,7 +29,7 @@ public class Agendamento {
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status = StatusAgendamento.AGENDADO;
     @Column(name = "sessao")
-    private LocalDateTime dataHora;
+    private OffsetDateTime dataHora;
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
@@ -37,4 +38,26 @@ public class Agendamento {
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataAtualizacao;
 
+    public void confirmar() {
+        setStatus(StatusAgendamento.CONFIRMADO);
+        setDataHora(OffsetDateTime.now());
+    }
+    public void cancelar() {
+        setStatus(StatusAgendamento.CANCELADO);
+        setDataHora(OffsetDateTime.now());
+    }
+
+    public void naoCompareceu() {
+        setStatus(StatusAgendamento.NAO_COMPARECEU);
+        setDataHora(OffsetDateTime.now());
+    }
+
+    private void setStatus(StatusAgendamento novoStatus) {
+        if (getStatus().naoPodeAlterarPara(novoStatus)) {
+            throw new NegocioException(
+                    String.format("O status do pedido %d não pode ser alterado de %s para %s",
+                            getId(), getStatus().getDescricao(), novoStatus.getDescricao()));
+        }
+       this.status = novoStatus;
+    }
 }

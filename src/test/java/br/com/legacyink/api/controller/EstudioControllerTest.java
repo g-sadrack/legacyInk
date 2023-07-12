@@ -137,7 +137,7 @@ class EstudioControllerTest {
         Cidade cidade = new Cidade(1L, "São Paulo", estado);
         Endereco endereco = new Endereco("01234-567", "Rua Principal", "123", "Apto 1", "Centro", cidade);
         estudio = new Estudio(ESTUDIO_ID, NOME_DO_ESTUDIO, TELEFONE, EMAIL, CNPJ, RAZAO_SOCIAL, REDES_SOCIAIS, endereco);
-        estudioDTO = new EstudioDTO(ESTUDIO_ID, NOME_DO_ESTUDIO, TELEFONE, EMAIL, CNPJ, RAZAO_SOCIAL, REDES_SOCIAIS, endereco);
+        estudioDTO = new EstudioDTO(ESTUDIO_ID, NOME_DO_ESTUDIO, TELEFONE, EMAIL, CNPJ, true,RAZAO_SOCIAL, REDES_SOCIAIS, endereco);
         estudioInput = new EstudioInput(NOME_DO_ESTUDIO, TELEFONE, EMAIL, CNPJ, RAZAO_SOCIAL, REDES_SOCIAIS, new EnderecoInput());
     }
 }

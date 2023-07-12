@@ -49,6 +49,7 @@ class AgendamentoControllerTest {
     private AgendamentoDTOConverter converter;
     @Mock
     private AgendamentoController controller;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -139,13 +140,13 @@ class AgendamentoControllerTest {
         Tatuagem tatuagem = new Tatuagem(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));
         TatuagemDTO tatuagemDTO = new TatuagemDTO(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));
 
-        agendamento = new Agendamento(1L, cliente, tatuagem, StatusAgendamento.COFIRMADO, LocalDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now());
+        agendamento = new Agendamento(1L, cliente, tatuagem, StatusAgendamento.CONFIRMADO, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now());
         agendamentoDTO = new AgendamentoDTO(
                 1L,
                 new ClienteResumo("Jorge", "Jorge@gmail.com", "996812321"),
-                new TatuagemResumo("Tatuagem de dragão", 20, BigDecimal.valueOf(350.0),Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png"),
-                StatusAgendamento.COFIRMADO);
-        agendamentoInput = new AgendamentoInput(new ClienteIdInput(1L), new TatuagemInput("Tatuagem de dragão", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png",BigDecimal.valueOf(250)), StatusAgendamento.COFIRMADO, LocalDateTime.now());
+                new TatuagemResumo("Tatuagem de dragão", 20, BigDecimal.valueOf(350.0), Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png"),
+                StatusAgendamento.CONFIRMADO);
+        agendamentoInput = new AgendamentoInput(new ClienteIdInput(1L), new TatuagemInput("Tatuagem de dragão", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(250)), StatusAgendamento.CONFIRMADO, LocalDateTime.now());
 
         tatuador.marcarAgendamento(agendamento);
     }
