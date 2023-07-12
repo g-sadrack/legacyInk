@@ -6,7 +6,6 @@ import br.com.legacyink.domain.exception.AgendamentoNaoEncontradoException;
 import br.com.legacyink.domain.model.Agendamento;
 import br.com.legacyink.domain.model.Cliente;
 import br.com.legacyink.domain.model.Tatuador;
-import br.com.legacyink.domain.model.enums.StatusAgendamento;
 import br.com.legacyink.domain.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +59,7 @@ public class AgendamentoService {
     @Transactional
     public Agendamento alterarAgendamento(Long estudioId, Long tatuadorId, Long agendamentoId, AgendamentoInput agendamentoInput) {
         Tatuador tatuador = tatuadorService.buscaTatuadorNoEstudio(estudioId, tatuadorId);
+        Cliente cliente = clienteService.validaClienteOuErro(agendamentoInput.getCliente().getId());
 
         Optional<Agendamento> agendamentoExistente = tatuador.getAgendamento()
                 .stream()
@@ -69,7 +69,7 @@ public class AgendamentoService {
         if (agendamentoExistente.isPresent()) {
             Agendamento agendamento = agendamentoExistente.get();
             convertido.copiaDTOparaModeloDominio(agendamentoInput, agendamento);
-            tatuador.marcarAgendamento(agendamento);
+            agendamento.setCliente(cliente);
             return agendamento;
         } else {
             throw new AgendamentoNaoEncontradoException("Não existe agendamento");
@@ -86,7 +86,6 @@ public class AgendamentoService {
                 .findFirst()
                 .orElseThrow(() -> new AgendamentoNaoEncontradoException(agendamentoId));
 
-        agendamento.setStatus(StatusAgendamento.CANCELADO);
         tatuador.desmarcarAgendamento(agendamento);
     }
 }

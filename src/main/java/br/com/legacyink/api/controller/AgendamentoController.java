@@ -45,7 +45,7 @@ public class AgendamentoController {
         return converter.paraDTO(agendamento);
     }
 
-    @PutMapping
+    @PutMapping("/{agendamentoId}")
     public AgendamentoDTO alterar(@PathVariable Long estudioId, @PathVariable Long tatuadorId,
                                   @PathVariable Long agendamentoId, @Validated @RequestBody AgendamentoInput agendamentoInput) {
         Agendamento agendamento = agendamentoService.alterarAgendamento(estudioId, tatuadorId, agendamentoId, agendamentoInput);
