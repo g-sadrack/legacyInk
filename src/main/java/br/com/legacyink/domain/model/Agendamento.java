@@ -7,8 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,6 +20,7 @@ public class Agendamento {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String codigo;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -42,6 +43,7 @@ public class Agendamento {
         setStatus(StatusAgendamento.CONFIRMADO);
         setDataHora(OffsetDateTime.now());
     }
+
     public void cancelar() {
         setStatus(StatusAgendamento.CANCELADO);
         setDataHora(OffsetDateTime.now());
@@ -58,6 +60,12 @@ public class Agendamento {
                     String.format("O status do pedido %d não pode ser alterado de %s para %s",
                             getId(), getStatus().getDescricao(), novoStatus.getDescricao()));
         }
-       this.status = novoStatus;
+        this.status = novoStatus;
     }
+
+    @PrePersist //metodo de callback é usado assim que o JPA fizer uma persistencia
+    private void gerarCodigo() {
+        setCodigo(UUID.randomUUID().toString());
+    }
+
 }

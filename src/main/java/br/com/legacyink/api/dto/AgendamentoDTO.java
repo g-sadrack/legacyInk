@@ -8,15 +8,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgendamentoDTO {
 
-    private Long id;
+    private String codigo;
     private ClienteResumo cliente;
     private TatuagemResumo tatuagem;
     private StatusAgendamento status;
+    private OffsetDateTime dataHora;
 
 }

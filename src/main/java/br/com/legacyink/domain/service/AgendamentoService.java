@@ -36,6 +36,10 @@ public class AgendamentoService {
                 .orElseThrow(() -> new AgendamentoNaoEncontradoException(agendamentoId));
     }
 
+    public Agendamento validaAgendamentoPorCodigoOuErro(String codigo) {
+        return agendamentoRepository.findByCodigo(codigo)
+                .orElseThrow(() -> new AgendamentoNaoEncontradoException("Codigo de agendamento invalido"));
+    }
 
     public List<Agendamento> listar(Long estudioId, Long tatuadorId) {
         Tatuador tatuador = tatuadorService.buscaTatuadorNoEstudio(estudioId, tatuadorId);

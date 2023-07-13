@@ -63,9 +63,9 @@ insert into `cliente` (`data_nascimento`, `email`, `endereco_cep`, `endereco_cid
 insert into `cliente` (`data_nascimento`, `email`, `endereco_cep`, `endereco_cidade_id`, `endereco_complemento`, `endereco_logradouro`, `endereco_numero`, `endereco_rua`,`idade`, `nome`, `sexo`, `telefone`) values ('1977-01-25', 'duda@gmail.com', '12745678', '1', 'Lt 24', 'Rua Marechal Deodoro', '20', 'Norte', 20, 'Eduardo Silva', 'MASCULINO', '(11) 9999-7787');
 
 -- agendamento
-INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES (NOW(), NOW(), 'AGENDADO', 1, 2, '2023-06-19 13:00:00');
-INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES (NOW(), NOW(), 'AGENDADO', 2, 3, '2023-06-19 14:30:00');
-INSERT INTO	agendamento (data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES (NOW(), NOW(), 'CONCLUIDO', 3, 1, '2023-06-19 16:30:00');
+INSERT INTO	agendamento (codigo, data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES ("1ea33429-5975-4443-bfb8-81612065736d",NOW(), NOW(), 'AGENDADO', 1, 2, '2023-06-19 13:00:00');
+INSERT INTO	agendamento (codigo, data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES ("d2cc3079-89a4-4594-a28d-08c205055824",NOW(), NOW(), 'AGENDADO', 2, 3, '2023-06-19 14:30:00');
+INSERT INTO	agendamento (codigo, data_cadastro, data_atualizacao, status, cliente_id, tatuagem_id, sessao) VALUES ("b29686d2-b463-43ec-8dc5-fa8d9f052de6",NOW(), NOW(), 'CONCLUIDO', 3, 1, '2023-06-19 16:30:00');
 
 -- agendamento_tatuadores
 INSERT INTO agendamento_tatuadores (agendamento_id, tatuador_id) VALUES (1, 1);

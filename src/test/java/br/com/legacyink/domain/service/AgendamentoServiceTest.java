@@ -159,7 +159,7 @@ class AgendamentoServiceTest {
         Tatuagem tatuagem = new Tatuagem(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));
         TatuagemDTO tatuagemDTO = new TatuagemDTO(1L, "Tatuagem", 20, Cor.PRETO_E_BRANCO, "Costas", "https://asjndaskdasn.png", BigDecimal.valueOf(100.0));
 
-        agendamento = new Agendamento(1L, cliente, tatuagem, StatusAgendamento.CONFIRMADO, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now());
+        agendamento = new Agendamento(1L,"dfb22b07-0f7f-414d-bb97-6f886ee13e52" ,cliente, tatuagem, StatusAgendamento.CONFIRMADO, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now());
         agendamentoInput = new AgendamentoInput(new ClienteIdInput(1L), new TatuagemInput(), StatusAgendamento.CONFIRMADO, LocalDateTime.now());
 
         tatuador.marcarAgendamento(agendamento);

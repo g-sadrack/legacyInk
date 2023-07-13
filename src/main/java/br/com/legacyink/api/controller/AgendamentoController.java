@@ -31,9 +31,15 @@ public class AgendamentoController {
         return converter.paraDTOLista(listar);
     }
 
-    @GetMapping("/{agendamentoId}")
+    @GetMapping("/id/{agendamentoId}")
     public AgendamentoDTO buscar(@PathVariable Long agendamentoId) {
         Agendamento agendamento = agendamentoService.validaAgendamentoOuErro(agendamentoId);
+        return converter.paraDTO(agendamento);
+    }
+
+    @GetMapping("/{codigo}")
+    public AgendamentoDTO buscarPorCodigo(@PathVariable String codigo) {
+        Agendamento agendamento = agendamentoService.validaAgendamentoPorCodigoOuErro(codigo);
         return converter.paraDTO(agendamento);
     }
 
