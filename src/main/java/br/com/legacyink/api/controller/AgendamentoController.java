@@ -4,6 +4,7 @@ import br.com.legacyink.api.dto.AgendamentoDTO;
 import br.com.legacyink.api.dto.input.AgendamentoInput;
 import br.com.legacyink.api.dtoconverter.AgendamentoDTOConverter;
 import br.com.legacyink.domain.model.Agendamento;
+import br.com.legacyink.domain.repository.filter.AgendamentoFilter;
 import br.com.legacyink.domain.service.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,15 +27,9 @@ public class AgendamentoController {
     }
 
     @GetMapping
-    public List<AgendamentoDTO> listarAgendamentos(@PathVariable Long estudioId, @PathVariable Long tatuadorId) {
-        List<Agendamento> listar = agendamentoService.listar(estudioId, tatuadorId);
+    public List<AgendamentoDTO> pesquisarAgendamentosComFiltro(AgendamentoFilter filtro) {
+        List<Agendamento> listar = agendamentoService.pesquisar(filtro);
         return converter.paraDTOLista(listar);
-    }
-
-    @GetMapping("/id/{agendamentoId}")
-    public AgendamentoDTO buscar(@PathVariable Long agendamentoId) {
-        Agendamento agendamento = agendamentoService.validaAgendamentoOuErro(agendamentoId);
-        return converter.paraDTO(agendamento);
     }
 
     @GetMapping("/{codigo}")

@@ -7,6 +7,8 @@ import br.com.legacyink.domain.model.Agendamento;
 import br.com.legacyink.domain.model.Cliente;
 import br.com.legacyink.domain.model.Tatuador;
 import br.com.legacyink.domain.repository.AgendamentoRepository;
+import br.com.legacyink.domain.repository.filter.AgendamentoFilter;
+import br.com.legacyink.infraestructure.spec.AgendamentoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,19 +33,18 @@ public class AgendamentoService {
         this.clienteService = clienteService;
     }
 
-    public Agendamento validaAgendamentoOuErro(Long agendamentoId) {
-        return agendamentoRepository.findById(agendamentoId)
-                .orElseThrow(() -> new AgendamentoNaoEncontradoException(agendamentoId));
-    }
-
     public Agendamento validaAgendamentoPorCodigoOuErro(String codigo) {
-        return agendamentoRepository.findByCodigo(codigo)
-                .orElseThrow(() -> new AgendamentoNaoEncontradoException("Codigo de agendamento invalido"));
+        return agendamentoRepository.findByCodigo(codigo).orElseThrow(
+                () -> new AgendamentoNaoEncontradoException("Codigo de agendamento invalido"));
     }
 
     public List<Agendamento> listar(Long estudioId, Long tatuadorId) {
         Tatuador tatuador = tatuadorService.buscaTatuadorNoEstudio(estudioId, tatuadorId);
         return tatuador.getAgendamento();
+    }
+
+    public List<Agendamento> pesquisar(AgendamentoFilter filtro) {
+        return agendamentoRepository.findAll(AgendamentoSpecs.usandoFiltro(filtro));
     }
 
     @Transactional
