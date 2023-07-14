@@ -40,9 +40,9 @@ INSERT INTO cidade (nome, estado_id) VALUES ('Duque de Caixias', 2);
 INSERT INTO cidade (nome, estado_id) VALUES ('Belo Horizonte', 3);
 
 -- tatuador
-INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao, ativo) VALUES ('Gabriel', 2, 4.5, true);
-INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao, ativo) VALUES ('Luanna', 1, 4.9, true);
-INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao, ativo) VALUES ('Monyelle', 3, 4.1, true);
+INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao, ativo) VALUES ('Gabriel', 2, 4, true);
+INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao, ativo) VALUES ('Luanna', 1, 5, true);
+INSERT INTO	tatuador (nome, tempo_experiencia, avaliacao, ativo) VALUES ('Monyelle', 3, 2, true);
 
 -- tatuador especialidades
 INSERT INTO tatuador_especialidades (tatuador_id, especialidade) VALUES (1, 'TRIBAL');
