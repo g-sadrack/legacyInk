@@ -17,20 +17,20 @@ public class StatusAgendamentoService {
     }
 
     @Transactional
-    public void confirmar(Long agendamentoId) {
-        Agendamento agendamento = agendamentoService.validaAgendamentoOuErro(agendamentoId);
+    public void confirmar(String codigo) {
+        Agendamento agendamento = agendamentoService.validaAgendamentoPorCodigoOuErro(codigo);
         agendamento.confirmar();
     }
 
     @Transactional
-    public void cancelar(Long agendamentoId) {
-        Agendamento agendamento = agendamentoService.validaAgendamentoOuErro(agendamentoId);
+    public void cancelar(String codigo) {
+        Agendamento agendamento = agendamentoService.validaAgendamentoPorCodigoOuErro(codigo);
         agendamento.cancelar();
     }
 
     @Transactional
-    public void naoCompareceu(Long agendamentoId) {
-        Agendamento agendamento = agendamentoService.validaAgendamentoOuErro(agendamentoId);
+    public void naoCompareceu(String codigo) {
+        Agendamento agendamento = agendamentoService.validaAgendamentoPorCodigoOuErro(codigo);
         agendamento.naoCompareceu();
     }
 }

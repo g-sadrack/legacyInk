@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/agendamentos/{agendamentoId}")
+@RequestMapping("/agendamentos/{codigo}")
 public class StatusAgendamentoController {
-
 
     private final StatusAgendamentoService statusService;
 
@@ -19,20 +18,20 @@ public class StatusAgendamentoController {
 
     @PutMapping("/confirmar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirmar(@PathVariable Long agendamentoId) {
-        statusService.confirmar(agendamentoId);
+    public void confirmar(@PathVariable String codigo) {
+        statusService.confirmar(codigo);
     }
 
     @PutMapping("/cancelar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelar(@PathVariable Long agendamentoId) {
-        statusService.cancelar(agendamentoId);
+    public void cancelar(@PathVariable String codigo) {
+        statusService.cancelar(codigo);
     }
 
     @PutMapping("/nao-compareceu")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void naoCompareceu(@PathVariable Long agendamentoId) {
-        statusService.naoCompareceu(agendamentoId);
+    public void naoCompareceu(@PathVariable String codigo) {
+        statusService.naoCompareceu(codigo);
     }
 
 }
